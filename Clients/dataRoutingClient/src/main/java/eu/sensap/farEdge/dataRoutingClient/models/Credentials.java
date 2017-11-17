@@ -11,6 +11,7 @@ package eu.sensap.farEdge.dataRoutingClient.models;
 public class Credentials
 {
 	private String user;
+	private String password;
 
 	
 	//Getters and setters
@@ -23,6 +24,14 @@ public class Credentials
 	public void setUser(String user)
 	{
 		this.user = user;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }
