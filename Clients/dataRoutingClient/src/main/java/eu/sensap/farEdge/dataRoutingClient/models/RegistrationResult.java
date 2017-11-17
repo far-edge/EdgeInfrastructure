@@ -13,6 +13,7 @@ public class RegistrationResult
 {
 	private boolean status;
 	private String errorMessage;
+	private String result;
 	
 	
 	//Getters and setters
@@ -35,6 +36,14 @@ public class RegistrationResult
 	public void setErrorMessage(String errorMessage)
 	{
 		this.errorMessage = errorMessage;
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
 	}
 	
 }
