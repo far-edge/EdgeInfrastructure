@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public class DataConsumerManifest extends BaseEntity
 {
+
 	private UUID dataConsumerManifestId;
 	private String MACAddress;
 	private Collection<DataSourceDefinition> dataSourceDefinitions;

@@ -7,7 +7,7 @@ public class DataSourceManifest extends BaseEntity
 	private UUID dataSourceManifestId;
 	private DataSourceDefinition dataSourceDefinition;
 	private DataInterfaceSpecificationParameters dataSourceDefinitionParameters;
-	private String MACAddress;
+	private String macAddress;
 	public UUID getDataSourceManifestId() {
 		return dataSourceManifestId;
 	}
@@ -26,11 +26,11 @@ public class DataSourceManifest extends BaseEntity
 	public void setDataSourceDefinitionParameters(DataInterfaceSpecificationParameters dataSourceDefinitionParameters) {
 		this.dataSourceDefinitionParameters = dataSourceDefinitionParameters;
 	}
-	public String getMACAddress() {
-		return MACAddress;
+	public String getMacAddress() {
+		return macAddress;
 	}
-	public void setMACAddress(String mACAddress) {
-		MACAddress = mACAddress;
+	public void setMacAddress(String macAddress) {
+		this.macAddress = macAddress;
 	}
 	
 

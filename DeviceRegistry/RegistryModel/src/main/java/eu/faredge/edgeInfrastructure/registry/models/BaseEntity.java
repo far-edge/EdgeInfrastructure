@@ -1,9 +1,17 @@
 package eu.faredge.edgeInfrastructure.registry.models;
 
-import sun.util.calendar.BaseCalendar.Date;
+import java.io.Serializable;
+import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+//import sun.util.calendar.BaseCalendar.Date;
+
+@JsonInclude(Include.NON_NULL)
 public class BaseEntity
 {
+
 	private Date dateCreated;
 	private String userCreated;
 	private Date dateModified;

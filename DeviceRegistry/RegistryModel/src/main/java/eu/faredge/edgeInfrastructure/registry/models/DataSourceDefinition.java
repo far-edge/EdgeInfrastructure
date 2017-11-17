@@ -2,7 +2,9 @@ package eu.faredge.edgeInfrastructure.registry.models;
 
 import java.util.UUID;
 
-public class DataSourceDefinition extends BaseEntity{
+public class DataSourceDefinition extends BaseEntity
+{
+
 	private UUID dataSourceDefinitionId;
 	private String type;
 	private DataTopic dataTopic;

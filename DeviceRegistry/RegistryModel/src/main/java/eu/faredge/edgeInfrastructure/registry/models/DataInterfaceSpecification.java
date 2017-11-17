@@ -1,8 +1,11 @@
 package eu.faredge.edgeInfrastructure.registry.models;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class DataInterfaceSpecification {
+public class DataInterfaceSpecification
+{
+
 	private UUID dataInterfaceSpecificationId;
 	private String communicationProtocol; 
 	private String communicationProtocolDetails;

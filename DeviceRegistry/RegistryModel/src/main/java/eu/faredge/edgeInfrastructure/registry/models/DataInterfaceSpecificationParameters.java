@@ -1,10 +1,12 @@
 package eu.faredge.edgeInfrastructure.registry.models;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.UUID;
 
-public class DataInterfaceSpecificationParameters
+public class DataInterfaceSpecificationParameters 
 {
+
 	public Collection<Parameter> getParameters() {
 		return parameters;
 	}

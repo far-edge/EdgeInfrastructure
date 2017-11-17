@@ -2,7 +2,7 @@ package eu.faredge.edgeInfrastructure.registry.models;
 
 import java.util.UUID;
 
-public class Parameter
+public class Parameter 
 {
 	private UUID parameterId;
 	private String key;

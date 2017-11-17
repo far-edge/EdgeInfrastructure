@@ -4,7 +4,9 @@ import java.util.UUID;
 
 import sun.util.calendar.BaseCalendar.Date;
 
+
 public class DataChannelDescriptor extends BaseEntity {
+
 	private UUID dataChannelDescriptorId; 
 	private DataSourceManifest dataSourceManifest;	
 	private DataConsumerManifest dataConsumerManifest;
