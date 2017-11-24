@@ -9,11 +9,10 @@ import java.util.Properties;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
+
 
 public class RegistryRepoClient implements RegistryRepoInterface {
 
@@ -22,7 +21,7 @@ public class RegistryRepoClient implements RegistryRepoInterface {
 
 	public RegistryRepoClient() {
 		// TODO change try-catch with throws exception
-//		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
+ //		DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
 //		defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
 //		client = Client.create(defaultClientConfig);
 		client = Client.create();
@@ -71,7 +70,6 @@ public class RegistryRepoClient implements RegistryRepoInterface {
 		return response;
 	}
 	
-	
 	@Override
 	public ClientResponse getResource(String uri) {
 		ClientResponse response;// = webResource.type("application/json").get(ClientResponse.class);
@@ -79,7 +77,6 @@ public class RegistryRepoClient implements RegistryRepoInterface {
 			
 			// create client resource for REST call
 			WebResource webResource = client.resource(uri);
-
 
 			// call resource and get Results
 			System.out.println("RegistryRepoClient:getResource:uri=" + uri);
@@ -159,20 +156,19 @@ public class RegistryRepoClient implements RegistryRepoInterface {
 		ClientResponse response;// = webResource.type("application/json").get(ClientResponse.class);
 		try {
 			// create client resource for REST call
-			WebResource webResource = client.resource(uri);
-			webResource.path(id);
-
+			WebResource webResource = client.resource(uri).queryParam("uri", id);
+			//webResource.path(id);
 			// String request = uri;// mapper.writeValueAsString(postData);
 
 			// call resource and get Results
-			response = webResource.type("application/json").get(ClientResponse.class);
+			response = webResource.type("application/json").delete(ClientResponse.class);
 
 			if (response.getStatus() != 201) {
 				// throw new RuntimeException("Failed : HTTP error code : " +
 				// response.getStatus());
 			}
 
-			String result = response.getEntity(String.class);
+//			String result = response.getEntity(String.class);
 
 			return response;
 
@@ -191,7 +187,6 @@ public class RegistryRepoClient implements RegistryRepoInterface {
 
 		return response;
 	}
-
 
 	@Override
 	public <T> ClientResponse putResource(String uri,String id, T putData) {
