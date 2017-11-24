@@ -1,8 +1,7 @@
 package eu.faredge.edgeInfrastructure.registry.models;
 
+import java.util.Date;
 import java.util.UUID;
-
-import sun.util.calendar.BaseCalendar.Date;
 
 
 public class DataChannelDescriptor extends BaseEntity {

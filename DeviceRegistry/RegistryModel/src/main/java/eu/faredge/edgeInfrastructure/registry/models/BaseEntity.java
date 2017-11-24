@@ -1,6 +1,5 @@
 package eu.faredge.edgeInfrastructure.registry.models;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;

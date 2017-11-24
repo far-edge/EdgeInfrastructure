@@ -11,6 +11,7 @@ public class RegistrationResult
 {
 	private RegistrationResultStatusEnum status;
 	private String statusMessage;
+	private String body;
 	
 	public RegistrationResultStatusEnum getStatus() {
 		return status;
@@ -26,6 +27,14 @@ public class RegistrationResult
 	
 	public void setStatusMessage(String statusMessage) {
 		this.statusMessage = statusMessage;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	
