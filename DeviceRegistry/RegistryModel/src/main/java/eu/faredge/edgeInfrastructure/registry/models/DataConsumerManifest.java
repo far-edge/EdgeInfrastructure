@@ -7,7 +7,7 @@ public class DataConsumerManifest extends BaseEntity
 {
 
 	private UUID dataConsumerManifestId;
-	private String MACAddress;
+	private String macAddress;
 	private Collection<DataSourceDefinition> dataSourceDefinitions;
 	public UUID getDataConsumerManifestId() {
 		return dataConsumerManifestId;
@@ -15,11 +15,11 @@ public class DataConsumerManifest extends BaseEntity
 	public void setDataConsumerManifestId(UUID dataConsumerManifestId) {
 		this.dataConsumerManifestId = dataConsumerManifestId;
 	}
-	public String getMACAddress() {
-		return MACAddress;
+	public String getMacAddress() {
+		return macAddress;
 	}
-	public void setMACAddress(String mACAddress) {
-		MACAddress = mACAddress;
+	public void setMacAddress(String macAddress) {
+		this.macAddress = macAddress;
 	}
 	public Collection<DataSourceDefinition> getDataSourceDefinitions() {
 		return dataSourceDefinitions;
