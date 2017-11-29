@@ -1,5 +1,6 @@
 package eu.faredge.edgeInfrastructure.deviceRegistry.controllers;
 
+
 import java.util.ArrayList;
 
 import org.springframework.http.MediaType;
@@ -20,15 +21,16 @@ import io.swagger.annotations.Api;
 @RestController
 @RequestMapping("/registry")
 @Api(value = "user", description = "Rest API for user operations", tags = "User API")
-public class ConsumerRegistrationController {
+public class ConsumerRegistrationController
+{
 	private BusinessImp bimpl = new BusinessImp();
-
 
 	@RequestMapping(value = "ConsumerRegistration", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public RegistrationResult ConsumerRegistration(@RequestBody DataConsumerManifest manifest)// , Object credentials)
 	{		
 		//TODO delete these 3 lines
 		System.out.println("Controller:ConsumerRegistration==> dcmuri= " + manifest.getUri());
+		System.out.println("Controller:ConsumerRegistration==> dcmMac= " + manifest.getMacAddress());
 		String user="george";
 		String password="george123";
 
@@ -47,8 +49,7 @@ public class ConsumerRegistrationController {
 				return res;
 			}
 			
-			// If logged-in check authorization
-			//authorization through Ledger Client 
+			// If logged-in check authorization. Authorization through Ledger Client 
 			authorized = bimpl.authorizeToLedger(new LedgerCredentials(user, password));
 			if (!authorized)
 			{
@@ -57,8 +58,7 @@ public class ConsumerRegistrationController {
 				return res;
 			}
 
-			// if authorized and authenticated creates the data source manifest to the
-			// registry repo
+			//If authorized and authenticated creates the data source manifest to the registry-repo
 			DataConsumerManifest registeredDcm = bimpl.createDcm(manifest);
 			if (registeredDcm!=null)
 			{
@@ -110,8 +110,7 @@ public class ConsumerRegistrationController {
 			return res;
 		}
 		
-		// If logged-in check authorization
-		//authorization through Ledger Client 
+		// If logged-in check authorization. Authorization through Ledger Client 
 		authorized = bimpl.authorizeToLedger(new LedgerCredentials(user, password));
 		if (!authorized)
 		{
@@ -120,7 +119,7 @@ public class ConsumerRegistrationController {
 			return res;
 		}
 		
-		// if authorized and authenticated calls registry repo to delete the data source manifest 
+		// if authorized and authenticated calls registry-repo to delete the DCM 
 		deleteStatus = bimpl.deleteDcm(id);
 		if (!deleteStatus)
 		{
@@ -133,18 +132,102 @@ public class ConsumerRegistrationController {
 		RegistrationResultStatusEnum status = RegistrationResultStatusEnum.SUCCESS;
 		res.setStatus(status);
 		res.setStatusMessage(statusMessage);
+		System.out.println("Controller:ConsumerRegistration==> unregistered! id=" + id);
 		return res;
 	}
 	
 	@RequestMapping(value="compatibleDSM", method = RequestMethod.GET)
-	public ArrayList<DataSourceManifest> getCompatibleDSM(String consumerId) {
-		return new ArrayList<DataSourceManifest>();
+	public ArrayList<DataSourceManifest> getCompatibleDSM(String id)
+	{		
+//		System.out.println("Controller:getCompatibleDSM==> dcm id="+id);
+		//check if id is null
+		if (id==null)
+		{
+			System.out.println("Controller:getCompatibleDSM==> id does not exist =");
+			return null;
+		}
+		
+		ArrayList<DataSourceManifest> dsmList = new ArrayList<DataSourceManifest>();
+		
+		// Call registry-repo to retrieve compatible DSM 
+		dsmList = bimpl.getCompatibleDsM(id);
+		
+		if ((dsmList==null)||(dsmList.size()==0))
+		{
+			System.out.println("Controller:getCompatibleDSM==> return no DSM");
+			return null;
+		}
+		
+		System.out.println("Controller:getCompatibleDSM==> dsmList returned size="+ dsmList.size());
+		return dsmList;
 	}
 	
-	@RequestMapping(value="accessToDSM", method = RequestMethod.GET)
-	public DataChannelDescriptor getAccessToDSM(String consumerId, String dsmId) {
+	@RequestMapping(value="accessToDSM",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public DataChannelDescriptor getAccessToDSM(@RequestBody DataChannelDescriptor dcd)
+	{
+		DataChannelDescriptor finalDcd =new DataChannelDescriptor();
+		//String user="george";
+		//String password="george123";
 		
-		return new DataChannelDescriptor();
+		boolean loggin = true;								//local authentication
+		boolean authorized = false;							//Ledger authorization
+		boolean configure=false;
+		RegistrationResult res = new RegistrationResult();
+		
+		//check if dcd, consumerId or datasourceId is null
+		if (dcd==null)
+		{
+			return null;
+		}
+		if ((dcd.getDataConsumerManifest().getDataConsumerManifestId()==null)||(dcd.getDataSourceManifest().getDataSourceManifestId()==null))
+		{
+			System.out.println("Controller:getAccessToDSM==> ids do not exist ");
+			return null;
+		}
+
+		// Login to service based on credentials
+		if (!loggin)
+		{
+			res.setStatus(RegistrationResultStatusEnum.LOGINFAILURE);
+			res.setStatusMessage("Could not login"); // or other message coming from Authentication system
+			System.out.println("Controller:getAccessToDSM==> failed to login ");
+			return null;
+		}
+		
+		// If logged-in check access authorization. Authorization through Ledger Client 
+		authorized = bimpl.authorizeAccesstoDSM(dcd.getDataConsumerManifest().getDataConsumerManifestId().toString(), dcd.getDataSourceManifest().getDataSourceManifestId().toString());
+		if (!authorized)
+		{
+			res.setStatus(RegistrationResultStatusEnum.DENIED);
+			res.setStatusMessage("Authorization Failure"); 
+			System.out.println("Controller:getAccessToDSM==> failed to authorize");
+			return null;
+		}
+		
+		// if authorized and authenticated calls registry-repo to create the DCD
+		finalDcd= bimpl.ctreateDcD(dcd);
+		if(finalDcd==null)
+		{
+			res.setStatus(RegistrationResultStatusEnum.FAIL);
+			res.setStatusMessage("Fail creating DCD");
+			System.out.println("Controller:getAccessToDSM==> failed dreating DCD ");
+			return null;
+		}
+		
+		// request access to data source
+		configure = bimpl.configureAccess(finalDcd.getDataConsumerManifest().getMacAddress(), finalDcd.getDataSourceManifest().getMacAddress());
+		if (configure==false)
+		{
+			res.setStatus(RegistrationResultStatusEnum.DENIED);
+			res.setStatusMessage("Configuration Failure");
+			System.out.println("Controller:getAccessToDSM==> failed to configure access");
+			return null;
+		}
+		
+		res.setStatus(RegistrationResultStatusEnum.SUCCESS);
+		res.setStatusMessage("Access granted"); 
+		System.out.println("Controller:getAccessToDSM==> Access granted!!!! ");
+		return finalDcd;
 	}
 
 }

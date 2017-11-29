@@ -19,7 +19,9 @@ import io.swagger.annotations.Api;
 @RestController
 @RequestMapping("/registry")
 @Api(value = "user", description = "Rest API for user operations", tags = "User API")
-public class DeviceRegistrationController {
+public class DeviceRegistrationController
+{
+
 	private BusinessImp bimpl = new BusinessImp();
 
 	@RequestMapping(value = "DeviceRegistration", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -124,6 +126,7 @@ public class DeviceRegistrationController {
 		
 		// if authorized and authenticated calls registry repo to delete the data source manifest 
 		deleteStatus= bimpl.deleteDsm(id);
+		
 		if (!deleteStatus)
 		{
 			res.setStatus(RegistrationResultStatusEnum.SYSTEMFAILURE);
@@ -141,14 +144,16 @@ public class DeviceRegistrationController {
 	
 	// TODO delete after this
 	@RequestMapping(value = "/getDataSourceDefinition", method = RequestMethod.GET)
-	public ArrayList<DataSourceDefinition> getDataSourceDefinition() {
+	public ArrayList<DataSourceDefinition> getDataSourceDefinition()
+	{
 		return bimpl.getDataSourceDefinition();
 		// return null;
 
 	}
 
 	@RequestMapping(value = "/unRegister", method = RequestMethod.DELETE)
-	public RegistrationResult unRegister(String id) {
+	public RegistrationResult unRegister(String id)
+	{
 		String statusMessage = "Unregister Succesfull of id=" + id;
 		RegistrationResultStatusEnum status = RegistrationResultStatusEnum.SUCCESS;
 		RegistrationResult res = new RegistrationResult();

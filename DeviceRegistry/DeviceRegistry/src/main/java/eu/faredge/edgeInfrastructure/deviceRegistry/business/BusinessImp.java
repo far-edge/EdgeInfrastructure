@@ -3,6 +3,7 @@ package eu.faredge.edgeInfrastructure.deviceRegistry.business;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 
 
@@ -21,23 +22,29 @@ import eu.faredge.edgeInfrastructure.registry.models.DataSourceManifest;
 import eu.faredge.edgeInfrastructure.registry.models.DataTopic;
 
 
-public class BusinessImp {
+public class BusinessImp
+{
 	private RegistryRepoClient registryRepoClient;
 	private Properties props;
 	
-	public BusinessImp() {
+	public BusinessImp()
+	{
 		
 		props = new Properties();
 		registryRepoClient = new RegistryRepoClient();
 		// TODO change try-catch with throws exception
-		try {
+		try
+		{
 			props.load(RegistryConfiguration.class.getClassLoader().getResourceAsStream("RegistryRepoClient.properties"));
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}
 	
-	public DataSourceManifest createDsm(DataSourceManifest dsm) {
+	public DataSourceManifest createDsm(DataSourceManifest dsm)
+	{
 
 		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
 				+ "/" + props.getProperty("root") + "/" + props.getProperty("DSM");
@@ -45,85 +52,123 @@ public class BusinessImp {
 		ClientResponse createDsmResponse = registryRepoClient.postResource(dsmEndpoint, dsm);
 		int dsmStatus = createDsmResponse.getStatus();
 		//TODO check if exists return error
-		if ((dsmStatus == 201) || (dsmStatus == 200)) {
+		if ((dsmStatus == 201) || (dsmStatus == 200))
+		{
 
-			try {
+			try
+			{
 				ObjectMapper mapper = new ObjectMapper();
 				String createDsmResponseString = createDsmResponse.getEntity(String.class);
 				DataSourceManifest newDsm = new DataSourceManifest();
 				newDsm = mapper.readValue(createDsmResponseString, newDsm.getClass());
 				System.out.println("BusinessImp:createDSM==>newDsm.id=" + newDsm.getDataSourceManifestId());
 				return newDsm;
-			} catch (ClientHandlerException | UniformInterfaceException | IOException e) {
+			}
+			catch (ClientHandlerException | UniformInterfaceException | IOException e)
+			{
 				System.out.println("BusinessImp:createDSM==>newDsm retieval failed");
 				e.printStackTrace();
 				createDsmResponse.close();
 				return null;
 			}
 
-		} else {
+		}
+		else
+		{
 			System.out.println("BusinessImp:createDSM==>Datasource Manifest creation failed " + createDsmResponse.getStatus());
 			return null;
 		}
 
 	}
 
-	public DataConsumerManifest createDcm(DataConsumerManifest dcm) {
+	public DataConsumerManifest createDcm(DataConsumerManifest dcm)
+	{
 
 		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
 				+ "/" + props.getProperty("root") + "/" + props.getProperty("DCM");
 
+		System.out.println("BusinessImp:createDCM==> dcm=" + dcm.getMacAddress());
 		ClientResponse createDcmResponse = registryRepoClient.postResource(dsmEndpoint, dcm);
+		
 		int dcmStatus = createDcmResponse.getStatus();
 		//TODO check if exists return error
-		if ((dcmStatus == 201) || (dcmStatus == 200)) {
+		if ((dcmStatus == 201) || (dcmStatus == 200))
+		{
 
-			try {
+			try
+			{
 				ObjectMapper mapper = new ObjectMapper();
 				String createDsmResponseString = createDcmResponse.getEntity(String.class);
 				DataConsumerManifest newDcm = new DataConsumerManifest();
 				newDcm = mapper.readValue(createDsmResponseString, newDcm.getClass());
-				System.out.println("BusinessImp:createDSM==>newDsm.id=" + newDcm.getDataConsumerManifestId());
+				System.out.println("BusinessImp:createDCM==>newDsm.id=" + newDcm.getDataConsumerManifestId());
 				return newDcm;
-			} catch (ClientHandlerException | UniformInterfaceException | IOException e) {
-				System.out.println("BusinessImp:createDSM==>newDsm retieval failed");
+			}
+			catch (ClientHandlerException | UniformInterfaceException | IOException e)
+			{
+				System.out.println("BusinessImp:createDCM==>newDsm retieval failed");
 				e.printStackTrace();
 				createDcmResponse.close();
 				return null;
 			}
 
-		} else {
+		}
+		else
+		{
 			System.out.println(
 					"BusinessImp:createDCM==>Data consumer Manifest creation failed " + createDcmResponse.getStatus());
 			return null;
 		}
 	}
 
-	public DataChannelDescriptor ctreateDcD(DataChannelDescriptor dcd) {
+	public DataChannelDescriptor ctreateDcD(DataChannelDescriptor dcd)
+	{
 		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
 				+ "/" + props.getProperty("root") + "/" + props.getProperty("DCD");
+		
+		//check if dcd is null
+		if (dcd==null)
+		{
+			System.out.println("BusinessImp:createDCD==> dcd is null");
+			return null;
+		}
+		// dcd request
 		ClientResponse createDcdResponse = registryRepoClient.postResource(dsmEndpoint, dcd);
 		int dcdStatus = createDcdResponse.getStatus();
-		//TODO check if exists return error
-		if ((dcdStatus == 201) || (dcdStatus == 200)) {
+		
+		// if not saved
+		if (dcdStatus!= 201)
+		{
+			System.out.println("BusinessImp:createDCD==>create newDcd failed status=" +createDcdResponse.getStatus());
+			return null;
+		}
+		
+		// if saved retrieve dcd
+		if (dcdStatus == 201)
+		{
 
-			try {
+			try
+			{
 				ObjectMapper mapper = new ObjectMapper();
 				String createDsdResponseString = createDcdResponse.getEntity(String.class);
 				DataChannelDescriptor newDcd = new DataChannelDescriptor();
 				newDcd = mapper.readValue(createDsdResponseString, newDcd.getClass());
-				System.out.println("BusinessImp:createDSM==>newDsm.id=" + newDcd.getDataChannelDescriptorId());
+				System.out.println("BusinessImp:createDCD==>newDcd.id=" + newDcd.getDataChannelDescriptorId());
 				return newDcd;
-			} catch (ClientHandlerException | UniformInterfaceException | IOException e) {
-				System.out.println("BusinessImp:createDSM==>newDsm retieval failed");
+			}
+			catch (ClientHandlerException | UniformInterfaceException | IOException e)
+			{
+				System.out.println("BusinessImp:createDCD==>newDcd retieval failed");
 				e.printStackTrace();
 				createDcdResponse.close();
 				return null;
 			}
 
-		} else {
+		}
+		else
+		{
 			System.out.println(
-					"BusinessImp:createDCM==>Data consumer Manifest creation failed " + createDcdResponse.getStatus());
+					"BusinessImp:createDCM==>DCD creation failed " + createDcdResponse.getStatus());
 			return null;
 		}
 
@@ -202,9 +247,9 @@ public class BusinessImp {
 		
 		if ((dcmStatus==400)||(dcmStatus==404))
 		{
-			System.out.println("BusinessImp:deleteDSM==>Datasource Manifest deletion failed or not exists " + deleteDcmResponse.getStatus());
+			System.out.println("BusinessImp:deleteDCM==>Data consumer Manifest deletion failed or not exists " + deleteDcmResponse.getStatus());
 			res.setStatus(RegistrationResultStatusEnum.FAIL);
-			res.setStatusMessage("Failed to delete DSM" + dcmStatus);
+			res.setStatusMessage("Failed to delete DCM" + dcmStatus);
 			deleteDcmResponse.close();
 			return false;
 		}
@@ -212,15 +257,17 @@ public class BusinessImp {
 		if (dcmStatus == 200)
 		{
 			try
-			{				
+			{
+				
 				String createDsmResponseString = deleteDcmResponse.getEntity(String.class);
 				res.setStatus(RegistrationResultStatusEnum.SUCCESS);
 				res.setStatusMessage(createDsmResponseString + + dcmStatus);
+				System.out.println("BusinessImp:deleteDCM==>deleteDcm status=" + dcmStatus);
 				result= true;
 			}
 			catch (ClientHandlerException | UniformInterfaceException e)
 			{
-				System.out.println("BusinessImp:deleteDSM==>deleteDsm retieval failed");
+				System.out.println("BusinessImp:deleteDCM==>deleteDcm retieval failed");
 				e.printStackTrace();
 				res.setBody(e.toString());
 				res.setStatus(RegistrationResultStatusEnum.SYSTEMFAILURE);
@@ -244,13 +291,53 @@ public class BusinessImp {
 		}
 	}
 	
-	public DataSourceManifest getCompatibleDsM(DataSourceDefinition dsd)
+	public ArrayList<DataSourceManifest> getCompatibleDsM(String id)
 	{
-		//TODO fill getCOmpatible DSM
+		RegistrationResult res = new RegistrationResult();
+		ObjectMapper mapper = new ObjectMapper();
+		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
+		+ "/" + props.getProperty("root") + "/" + props.getProperty("DSM")+ "/dcm";
+		
+		//TODO Is this necessary?
+		if (id==null)
+		{
+			res.setStatus(RegistrationResultStatusEnum.NOTFOUND);
+			res.setStatusMessage("There is no list");
+			return null;			
+		}
+		
+		ClientResponse response = registryRepoClient.getResource(dsmEndpoint,id);
+//		System.out.println("BussinesImpl:getCompatibleDsM:response=" + response.toString());
+		
+		if (response.getStatus()==200)
+		{
+			String output = response.getEntity(String.class);
+//			ArrayList<DataSourceManifest> dsmList = new ArrayList<DataSourceManifest>();
+			
+			try
+			{
+				DataSourceManifest[] dsmTable =mapper.readValue(output,DataSourceManifest[].class);
+				ArrayList<DataSourceManifest> dsmList = new ArrayList<DataSourceManifest>();
+				dsmList.addAll(Arrays.asList(dsmTable));
+				return dsmList; 
+			}
+			catch (IOException e)
+			{
+				System.out.println("Error retrieving Data Source Manifests");
+				e.printStackTrace();
+			}
+			
+		}		
 		return null;
 	}
+
+	public boolean authorizeAccesstoDSM (String consumerId, String dataSourceId)
+	{
+		//TODO: connect with Mauro's Ledger client
+		return true;
+	}
 	
-	public boolean configureAccess (String consumerMac, String producerMac)
+ 	public boolean configureAccess (String consumerMac, String producerMac)
 	{
 		//TODO: connect with Mauro's Configuration service
 		return true;
@@ -273,12 +360,15 @@ public class BusinessImp {
 		if (response.getStatus()==200)
 		{
 			String output = response.getEntity(String.class);
-			ArrayList<DataSourceDefinition> dt = new ArrayList<DataSourceDefinition>();
 			try
 			{
-				dt = mapper.readValue(output, dt.getClass());
-				return dt;
-			} catch (IOException e) {
+				DataSourceDefinition[] dt = mapper.readValue(output, DataSourceDefinition[].class);
+				ArrayList<DataSourceDefinition> dsdList = new ArrayList<DataSourceDefinition>();
+				dsdList.addAll(Arrays.asList(dt));
+				return dsdList;
+			}
+			catch (IOException e)
+			{
 				System.out.println("Error retrieving Data Source Definitions");
 				e.printStackTrace();
 			}			
@@ -297,12 +387,15 @@ public class BusinessImp {
 		if (response.getStatus()==200)
 		{
 			String output = response.getEntity(String.class);
-			ArrayList<DataTopic> dt = new ArrayList<DataTopic>();
 			try
 			{
-				dt = mapper.readValue(output, dt.getClass());
-				return dt;
-			} catch (IOException e) {
+				DataTopic[] dt = mapper.readValue(output, DataTopic[].class);
+				ArrayList<DataTopic> dtList = new ArrayList<DataTopic>();
+				dtList.addAll(Arrays.asList(dt));
+				return dtList;
+			}
+			catch (IOException e)
+			{
 				System.out.println("Error retrieving Data Topics");				
 				e.printStackTrace();
 			}
