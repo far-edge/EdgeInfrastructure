@@ -4,10 +4,10 @@
 
 
 	<groupId>eu.sensap.faredge</groupId>
-	<artifactId>dataRoutingClient</artifactId>
+	<artifactId>consumerClient</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>dataRoutingClient</name>
-	<description>Registry and Kafka Connector Client </description>
+	<name>consumerClient</name>
+	<description>consumer Client </description>
 
 
 	<properties>
