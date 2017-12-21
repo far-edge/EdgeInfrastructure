@@ -63,7 +63,7 @@ public class RegistryClientTest
 	@Test
 	public final void testRegister()
 	{
-		RegistrationResult res =client.register(uuid, credentials, configurationEnv);
+		RegistrationResult res =client.registerDevice(uuid, credentials, configurationEnv);
 		System.out.println("Message=" +res.getErrorMessage() +" succes=" + res.isStatus());		
 		// TODO : should define  required data for registration
 		fail("Not yet implemented"); 
@@ -75,7 +75,7 @@ public class RegistryClientTest
 	 */
 	@Test
 	public final void testUnRegister() {
-		RegistrationResult res = client.unRegister();
+		RegistrationResult res = client.unRegisterDevice();
 		System.out.println("Message=" +res.getErrorMessage() +" succes=" + res.isStatus());
 		// TODO : should define  required data for registration
 		fail("Not yet implemented");

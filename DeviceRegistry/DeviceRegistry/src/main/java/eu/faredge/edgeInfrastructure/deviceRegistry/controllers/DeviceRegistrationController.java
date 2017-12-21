@@ -19,7 +19,7 @@ import io.swagger.annotations.Api;
 @RestController
 @RequestMapping("/registry")
 @Api(value = "user", description = "Rest API for user operations", tags = "User API")
-public class DeviceRegistrationController
+public class DeviceRegistrationController implements DeviceRegistrationInterface
 {
 
 	private BusinessImp bimpl = new BusinessImp();
@@ -37,6 +37,7 @@ public class DeviceRegistrationController
 		try 
 		{
 			RegistrationResult res = new RegistrationResult();
+			res.setBody("");
 			boolean loggin = true;								//local authentication
 			boolean authorized = false;							//Ledger authorization
 			boolean registered=false;							//Register to registry repo
@@ -78,6 +79,7 @@ public class DeviceRegistrationController
 			// Successful authentication, authorization and registration. Create response message		
 			res.setStatus(RegistrationResultStatusEnum.SUCCESS);			
 			res.setStatusMessage("Succes uuid=" + registeredDsm.getDataSourceManifestId());
+			res.setBody(registeredDsm.getDataSourceManifestId().toString());
 			System.out.println("Controller:deviceRegistration==> registered!=" + registeredDsm.getDataSourceManifestId());
 			return res;
 			
@@ -104,6 +106,7 @@ public class DeviceRegistrationController
 		boolean authorized = false;
 		boolean deleteStatus=false;
 		RegistrationResult res = new RegistrationResult();
+		res.setBody("");
 		
 		//TODO is this necessary?
 		// Login to service based on credentials
@@ -138,9 +141,12 @@ public class DeviceRegistrationController
 		RegistrationResultStatusEnum status = RegistrationResultStatusEnum.SUCCESS;
 		res.setStatus(status);
 		res.setStatusMessage(statusMessage);
+		res.setBody(id);
 		System.out.println("Controller:deviceRegistration unregister succesfull==> id= " + id);
 		return res;
 	}
+	
+	
 	
 	// TODO delete after this
 	@RequestMapping(value = "/getDataSourceDefinition", method = RequestMethod.GET)
@@ -151,15 +157,15 @@ public class DeviceRegistrationController
 
 	}
 
-	@RequestMapping(value = "/unRegister", method = RequestMethod.DELETE)
-	public RegistrationResult unRegister(String id)
-	{
-		String statusMessage = "Unregister Succesfull of id=" + id;
-		RegistrationResultStatusEnum status = RegistrationResultStatusEnum.SUCCESS;
-		RegistrationResult res = new RegistrationResult();
-		res.setStatus(status);
-		res.setStatusMessage(statusMessage);
-		return res;
-	}
+//	@RequestMapping(value = "/unRegister", method = RequestMethod.DELETE)
+//	public RegistrationResult unRegister(String id)
+//	{
+//		String statusMessage = "Unregister Succesfull of id=" + id;
+//		RegistrationResultStatusEnum status = RegistrationResultStatusEnum.SUCCESS;
+//		RegistrationResult res = new RegistrationResult();
+//		res.setStatus(status);
+//		res.setStatusMessage(statusMessage);
+//		return res;
+//	}
 	
 }

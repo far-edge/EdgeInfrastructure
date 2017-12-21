@@ -21,7 +21,7 @@ import io.swagger.annotations.Api;
 @RestController
 @RequestMapping("/registry")
 @Api(value = "user", description = "Rest API for user operations", tags = "User API")
-public class ConsumerRegistrationController
+public class ConsumerRegistrationController implements ConsumerRegistrationInterface
 {
 	private BusinessImp bimpl = new BusinessImp();
 

@@ -13,7 +13,8 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import eu.sensap.farEdge.dataRoutingClient.interfaces.RegisterInterface;
+import eu.faredge.edgeInfrastructure.registry.models.DataSourceManifest;
+import eu.sensap.farEdge.dataRoutingClient.interfaces.DeviceRegisterInterface;
 import eu.sensap.farEdge.dataRoutingClient.models.ConfigurationEnv;
 import eu.sensap.farEdge.dataRoutingClient.models.Credentials;
 import eu.sensap.farEdge.dataRoutingClient.models.RegistrationResult;
@@ -25,17 +26,20 @@ import eu.sensap.farEdge.dataRoutingClient.models.RegistrationResult;
  *  2. Unregisters e registered device
  *  3. Asks if a device is registered   
   */
-public class RegistryClient implements RegisterInterface
+public class RegistryClient implements DeviceRegisterInterface
 {
-	private Credentials credentials;		//Credentials for registry connection
+	private Credentials credentials;			//Credentials for registry connection
 	private ConfigurationEnv configurationEnv;	//configuration environmental values for registry and message bus connection
-	private String uuid;					// device uuid
+	private DataSourceManifest dsm;				//Data source Manifest for the device
+	private String uuid;						// device uuid
 
 	public RegistryClient(Credentials credentials, String uuid) 
 	{
 		this.setCredentials(credentials);
 		this.setUuid(uuid);
 	}
+	
+	
 	
 	public RegistryClient() 
 	{
@@ -44,7 +48,7 @@ public class RegistryClient implements RegisterInterface
 
 
 	// The public registration method
-	public RegistrationResult register(String uuid, Credentials credentials, ConfigurationEnv configurationEnv) 
+	public RegistrationResult registerDevice(String uuid, Credentials credentials, ConfigurationEnv configurationEnv) 
 	{
 		
 		// Initialize local variables
@@ -64,7 +68,7 @@ public class RegistryClient implements RegisterInterface
 	}
 
 	//the public method for unregister
-	public RegistrationResult unRegister()
+	public RegistrationResult unRegisterDevice()
 	{
 		
 		// TODO: define the registry service URI and property name. If no exist we must define a default URI 

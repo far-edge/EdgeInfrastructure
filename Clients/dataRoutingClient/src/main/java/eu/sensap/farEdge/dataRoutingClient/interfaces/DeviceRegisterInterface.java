@@ -16,7 +16,7 @@ import eu.sensap.farEdge.dataRoutingClient.models.RegistrationResult;
  * 	2. unRegister from registry
  * 	3. status of registration
  */
-public interface RegisterInterface
+public interface DeviceRegisterInterface
 {
 	
 	/***
@@ -26,13 +26,13 @@ public interface RegisterInterface
 	 * @param configurationEnv
 	 * @return  RegistrationResult
 	 */
-	public RegistrationResult register(String id, Credentials credentials, ConfigurationEnv configurationEnv );
+	public RegistrationResult registerDevice(String id, Credentials credentials, ConfigurationEnv configurationEnv );
 	
 	/***
 	 * unRegister method : A device unregisters from the registry
 	 * @return RegistrationResult
 	 */
-	public RegistrationResult unRegister();
+	public RegistrationResult unRegisterDevice();
 	
 	
 	/**
@@ -40,4 +40,6 @@ public interface RegisterInterface
 	 * @return boolean 
 	 */
 	public boolean isRegistered();
+	
+
 }

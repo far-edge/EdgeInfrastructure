@@ -6,7 +6,7 @@
 package eu.sensap.farEdge.dataRoutingClient.impl;
 
 import eu.sensap.farEdge.dataRoutingClient.interfaces.MessageBusInterface;
-import eu.sensap.farEdge.dataRoutingClient.interfaces.RegisterInterface;
+import eu.sensap.farEdge.dataRoutingClient.interfaces.DeviceRegisterInterface;
 import eu.sensap.farEdge.dataRoutingClient.models.ConfigurationEnv;
 import eu.sensap.farEdge.dataRoutingClient.models.Credentials;
 import eu.sensap.farEdge.dataRoutingClient.models.RegistrationResult;
@@ -25,7 +25,7 @@ import eu.sensap.farEdge.dataRoutingClient.messageBus.KafkaJavaProducer;
  * 	5. publishAsync method: publishes (in an Async way) a message to Message bus
  *
  */
-public class DataRouteClient implements MessageBusInterface<String>, RegisterInterface
+public class DataRouteClient implements MessageBusInterface<String>, DeviceRegisterInterface
 {
 	
 	private Credentials credentials;					//Required credentials for registration
@@ -43,23 +43,23 @@ public class DataRouteClient implements MessageBusInterface<String>, RegisterInt
 		registryClient = new RegistryClient();
 	}
 
-	public RegistrationResult register(String id, Credentials credentials, ConfigurationEnv configurationEnv)
+	public RegistrationResult registerDevice(String id, Credentials credentials, ConfigurationEnv configurationEnv)
 	{
 		// Store local variables
 		this.setConfigurationEnv(configurationEnv);
 		this.setCredentials(credentials);
 		
 		//Call registry client	to register	
-		RegistrationResult RegistrationResult = registryClient.register(id, credentials, configurationEnv);			
+		RegistrationResult RegistrationResult = registryClient.registerDevice(id, credentials, configurationEnv);			
 		
 		return RegistrationResult;
 	}
 
-	public RegistrationResult unRegister()
+	public RegistrationResult unRegisterDevice()
 	{
 		
 		// Call registry client to unregister 
-		RegistrationResult RegistrationResult = registryClient.unRegister();
+		RegistrationResult RegistrationResult = registryClient.unRegisterDevice();
 		
 		return RegistrationResult ;
 	}
