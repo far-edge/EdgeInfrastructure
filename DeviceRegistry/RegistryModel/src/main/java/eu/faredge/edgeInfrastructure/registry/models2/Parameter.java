@@ -1,11 +1,18 @@
-package eu.faredge.edgeInfrastructure.registry.models;
+package eu.faredge.edgeInfrastructure.registry.models2;
+
+import java.util.UUID;
 
 public class Parameter 
 {
-
+	private UUID parameterId;
 	private String key;
 	private String value;
-	
+	public UUID getParameterId() {
+		return parameterId;
+	}
+	public void setParameterId(UUID parameterId) {
+		this.parameterId = parameterId;
+	}
 	public String getKey() {
 		return key;
 	}
