@@ -14,6 +14,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 import eu.faredge.edgeInfrastructure.registry.models.DataSourceManifest;
+//import eu.faredge.edgeInfrastructure.registry.models.DataSourceManifest;
 import eu.sensap.farEdge.dataRoutingClient.interfaces.DeviceRegisterInterface;
 import eu.sensap.farEdge.dataRoutingClient.models.ConfigurationEnv;
 import eu.sensap.farEdge.dataRoutingClient.models.Credentials;
