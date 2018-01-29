@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceRegistryRepo", "DeviceRegistryRepo\DeviceRegistryRepo.csproj", "{308C22BB-0FCD-4269-9FBF-333CF47CF7E3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{308C22BB-0FCD-4269-9FBF-333CF47CF7E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{308C22BB-0FCD-4269-9FBF-333CF47CF7E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{308C22BB-0FCD-4269-9FBF-333CF47CF7E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{308C22BB-0FCD-4269-9FBF-333CF47CF7E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D11A8C67-B881-458A-8E8F-139CED206A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D11A8C67-B881-458A-8E8F-139CED206A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D11A8C67-B881-458A-8E8F-139CED206A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D11A8C67-B881-458A-8E8F-139CED206A7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F32DC43B-D235-4AF0-8632-11743FABAB84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F32DC43B-D235-4AF0-8632-11743FABAB84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F32DC43B-D235-4AF0-8632-11743FABAB84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F32DC43B-D235-4AF0-8632-11743FABAB84}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.VersionControlPolicy = $1
+	EndGlobalSection
+EndGlobal

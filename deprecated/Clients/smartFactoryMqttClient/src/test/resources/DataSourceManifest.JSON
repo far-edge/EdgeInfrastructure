@@ -1,0 +1,38 @@
+{
+	"dataSourceDefinition": {
+		"type": "KAFKA-RAW-TEST 5",
+		"dataTopic": {
+			"dataModelDescription": "Test Raw measurements for KAFKA 5",
+			"uri": "dtopic://faredge/raw5"
+		},
+		"dataInterfaceSpecification": {
+			"communicationProtocol": "KAFKA",
+			"communicationProtocolDetails": "localhost:9092",
+			"connectionParameters": "test-topic"
+		},
+		"uri": "dsd://faredge/test-raw-meaurements5"
+	},
+	"dataSourceDefinitionParameters": {
+		"parameters": [
+			{
+				"key": "bootstrap.servers",
+				"value": "localhost:9092"
+			},
+			{
+				"key": "client.id",
+				"value": "FarEdgeGateway"
+			},
+			{
+				"key": "value.serializer",
+				"value": "org.apache.kafka.common.serialization.StringSerializer"
+			},
+			{
+				"key": "key.serializer",
+				"value": "org.apache.kafka.common.serialization.LongSerializer"
+			}
+		]
+	},
+	"macAddress": "00:33:13:AC:1F:CB",
+	"uri": "dsrc://TestDevice/KAFKA-RAW7"
+}
+
