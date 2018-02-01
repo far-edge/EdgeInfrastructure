@@ -14,8 +14,8 @@ import eu.faredge.edgeInfrastructure.deviceRegistry.business.LedgerCredentials;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResultStatusEnum;
 import eu.faredge.edgeInfrastructure.registry.models.DataChannelDescriptor;
-import eu.faredge.edgeInfrastructure.registry.models.DataConsumerManifest;
-import eu.faredge.edgeInfrastructure.registry.models.DataSourceManifest;
+import eu.faredge.edgeInfrastructure.registry.models.DCM;
+import eu.faredge.edgeInfrastructure.registry.models.DSM;
 import io.swagger.annotations.Api;
 
 @RestController
@@ -26,7 +26,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 	private BusinessImp bimpl = new BusinessImp();
 
 	@RequestMapping(value = "ConsumerRegistration", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public RegistrationResult ConsumerRegistration(@RequestBody DataConsumerManifest manifest)// , Object credentials)
+	public RegistrationResult ConsumerRegistration(@RequestBody DCM manifest)// , Object credentials)
 	{		
 		//TODO delete these 3 lines
 		System.out.println("Controller:ConsumerRegistration==> dcmuri= " + manifest.getUri());
@@ -59,7 +59,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 			}
 
 			//If authorized and authenticated creates the data source manifest to the registry-repo
-			DataConsumerManifest registeredDcm = bimpl.createDcm(manifest);
+			DCM registeredDcm = bimpl.createDcm(manifest);
 			if (registeredDcm!=null)
 			{
 				registered = true;
@@ -74,8 +74,8 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 			
 			// Successful authentication, authorization and registration. Create response message		
 			res.setStatus(RegistrationResultStatusEnum.SUCCESS);			
-			res.setStatusMessage("Succes uuid=" + registeredDcm.getDataConsumerManifestId());
-			System.out.println("Controller:ConsumerRegistration==> registered!=" + registeredDcm.getDataConsumerManifestId());
+			res.setStatusMessage("Succes uri=" + registeredDcm.getUri());
+			System.out.println("Controller:ConsumerRegistration==> registered!=" + registeredDcm.getUri());
 			return res;
 			
 
@@ -91,7 +91,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 	}
 	
 	@RequestMapping(value = "/ConsumerRegistration", method = RequestMethod.DELETE)
-	public RegistrationResult ConsumerRegistration(String id) // , Object credentials)
+	public RegistrationResult ConsumerRegistration(String dsd) // , Object credentials)
 	{
 		String user="george";
 		String password="george123";
@@ -120,7 +120,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		}
 		
 		// if authorized and authenticated calls registry-repo to delete the DCM 
-		deleteStatus = bimpl.deleteDcm(id);
+		deleteStatus = bimpl.deleteDcm(dsd);
 		if (!deleteStatus)
 		{
 			res.setStatus(RegistrationResultStatusEnum.SYSTEMFAILURE);
@@ -128,16 +128,16 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 			return res;
 		}
 		
-		String statusMessage = "Unregister Succesfull of id=" + id;
+		String statusMessage = "Unregister Succesfull of id=" + dsd;
 		RegistrationResultStatusEnum status = RegistrationResultStatusEnum.SUCCESS;
 		res.setStatus(status);
 		res.setStatusMessage(statusMessage);
-		System.out.println("Controller:ConsumerRegistration==> unregistered! id=" + id);
+		System.out.println("Controller:ConsumerRegistration==> unregistered! id=" + dsd);
 		return res;
 	}
 	
 	@RequestMapping(value="compatibleDSM", method = RequestMethod.GET)
-	public ArrayList<DataSourceManifest> getCompatibleDSM(String id)
+	public ArrayList<DSM> getCompatibleDSM(String id)
 	{		
 //		System.out.println("Controller:getCompatibleDSM==> dcm id="+id);
 		//check if id is null
@@ -147,7 +147,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 			return null;
 		}
 		
-		ArrayList<DataSourceManifest> dsmList = new ArrayList<DataSourceManifest>();
+		ArrayList<DSM> dsmList = new ArrayList<DSM>();
 		
 		// Call registry-repo to retrieve compatible DSM 
 		dsmList = bimpl.getCompatibleDsM(id);
@@ -179,7 +179,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		{
 			return null;
 		}
-		if ((dcd.getDataConsumerManifest().getDataConsumerManifestId()==null)||(dcd.getDataSourceManifest().getDataSourceManifestId()==null))
+		if ((dcd.getDataConsumerManifest().getUri()==null)||(dcd.getDataSourceManifest().getUri()==null))
 		{
 			System.out.println("Controller:getAccessToDSM==> ids do not exist ");
 			return null;
@@ -195,7 +195,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		}
 		
 		// If logged-in check access authorization. Authorization through Ledger Client 
-		authorized = bimpl.authorizeAccesstoDSM(dcd.getDataConsumerManifest().getDataConsumerManifestId().toString(), dcd.getDataSourceManifest().getDataSourceManifestId().toString());
+		authorized = bimpl.authorizeAccesstoDSM(dcd.getDataConsumerManifest().getUri(), dcd.getDataSourceManifest().getUri());
 		if (!authorized)
 		{
 			res.setStatus(RegistrationResultStatusEnum.DENIED);

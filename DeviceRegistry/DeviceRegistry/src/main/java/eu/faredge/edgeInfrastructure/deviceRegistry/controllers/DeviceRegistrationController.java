@@ -1,7 +1,5 @@
 package eu.faredge.edgeInfrastructure.deviceRegistry.controllers;
 
-import java.util.ArrayList;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +10,7 @@ import eu.faredge.edgeInfrastructure.deviceRegistry.business.BusinessImp;
 import eu.faredge.edgeInfrastructure.deviceRegistry.business.LedgerCredentials;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResultStatusEnum;
-import eu.faredge.edgeInfrastructure.registry.models.DataSourceDefinition;
-import eu.faredge.edgeInfrastructure.registry.models.DataSourceManifest;
+import eu.faredge.edgeInfrastructure.registry.models.DSM;
 import io.swagger.annotations.Api;
 
 @RestController
@@ -25,12 +22,13 @@ public class DeviceRegistrationController implements DeviceRegistrationInterface
 	private BusinessImp bimpl = new BusinessImp();
 
 	@RequestMapping(value = "DeviceRegistration", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public RegistrationResult deviceRegistration(@RequestBody DataSourceManifest manifest)// , Object credentials)
+	public RegistrationResult deviceRegistration(@RequestBody DSM manifest)// , Object credentials)
 	{
 		
 		//TODO delete these 4 lines
 		System.out.println("Controller:deviceRegistration==> dmsuri= " + manifest.getUri());
-		System.out.println("Controller:deviceRegistration==> dsduri=" + manifest.getDataSourceDefinition().getUri());
+		System.out.println("Controller:deviceRegistration==> dsduri=" + manifest.getDataSourceDefinitionReferenceID());
+		System.out.println("Controller:deviceRegistration==> params=" + manifest.getDataSourceDefinitionInterfaceParameters().getParameter().size());
 		String user="george";
 		String password="george123";
 
@@ -62,7 +60,7 @@ public class DeviceRegistrationController implements DeviceRegistrationInterface
 
 			// if authorized and authenticated creates the data source manifest to the
 			// registry repo
-			DataSourceManifest registeredDsm = bimpl.createDsm(manifest);
+			DSM registeredDsm = bimpl.createDsm(manifest);
 			if (registeredDsm!=null)
 			{
 				registered = true;
@@ -78,9 +76,9 @@ public class DeviceRegistrationController implements DeviceRegistrationInterface
 			
 			// Successful authentication, authorization and registration. Create response message		
 			res.setStatus(RegistrationResultStatusEnum.SUCCESS);			
-			res.setStatusMessage("Succes uuid=" + registeredDsm.getDataSourceManifestId());
-			res.setBody(registeredDsm.getDataSourceManifestId().toString());
-			System.out.println("Controller:deviceRegistration==> registered!=" + registeredDsm.getDataSourceManifestId());
+			res.setStatusMessage("Succes uuid=" + registeredDsm.getUri());
+			res.setBody(registeredDsm.getUri());
+			System.out.println("Controller:deviceRegistration==> registered!=" + registeredDsm.getUri());
 			return res;
 			
 
@@ -149,6 +147,7 @@ public class DeviceRegistrationController implements DeviceRegistrationInterface
 	
 	
 	// TODO delete after this
+/*
 	@RequestMapping(value = "/getDataSourceDefinition", method = RequestMethod.GET)
 	public ArrayList<DataSourceDefinition> getDataSourceDefinition()
 	{
@@ -156,7 +155,7 @@ public class DeviceRegistrationController implements DeviceRegistrationInterface
 		// return null;
 
 	}
-
+*/
 //	@RequestMapping(value = "/unRegister", method = RequestMethod.DELETE)
 //	public RegistrationResult unRegister(String id)
 //	{

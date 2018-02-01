@@ -15,10 +15,11 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import eu.faredge.edgeInfrastructure.deviceRegistry.RegistryConfiguration;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResultStatusEnum;
+import eu.faredge.edgeInfrastructure.registry.models.DSM;
 import eu.faredge.edgeInfrastructure.registry.models.DataChannelDescriptor;
-import eu.faredge.edgeInfrastructure.registry.models.DataConsumerManifest;
+import eu.faredge.edgeInfrastructure.registry.models.DCM;
 import eu.faredge.edgeInfrastructure.registry.models.DataSourceDefinition;
-import eu.faredge.edgeInfrastructure.registry.models.DataSourceManifest;
+
 import eu.faredge.edgeInfrastructure.registry.models.DataTopic;
 
 
@@ -43,11 +44,11 @@ public class BusinessImp
 		}
 	}
 	
-	public DataSourceManifest createDsm(DataSourceManifest dsm)
+	public DSM createDsm(DSM dsm)
 	{
 
 		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
-				+ "/" + props.getProperty("root") + "/" + props.getProperty("DSM");
+				+"/" + props.getProperty("DSM")+ "/";
 		
 		ClientResponse createDsmResponse = registryRepoClient.postResource(dsmEndpoint, dsm);
 		int dsmStatus = createDsmResponse.getStatus();
@@ -59,9 +60,9 @@ public class BusinessImp
 			{
 				ObjectMapper mapper = new ObjectMapper();
 				String createDsmResponseString = createDsmResponse.getEntity(String.class);
-				DataSourceManifest newDsm = new DataSourceManifest();
+				DSM newDsm = new DSM();
 				newDsm = mapper.readValue(createDsmResponseString, newDsm.getClass());
-				System.out.println("BusinessImp:createDSM==>newDsm.id=" + newDsm.getDataSourceManifestId());
+				System.out.println("BusinessImp:createDSM==>newDsm.uri=" + newDsm.getUri());
 				return newDsm;
 			}
 			catch (ClientHandlerException | UniformInterfaceException | IOException e)
@@ -81,13 +82,16 @@ public class BusinessImp
 
 	}
 
-	public DataConsumerManifest createDcm(DataConsumerManifest dcm)
+	public DCM createDcm(DCM dcm)
 	{
 
 		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
-				+ "/" + props.getProperty("root") + "/" + props.getProperty("DCM");
+				 + "/" + props.getProperty("DCM") + "/";
+		
+		
 
 		System.out.println("BusinessImp:createDCM==> dcm=" + dcm.getMacAddress());
+		System.out.println("BusinessImp:createDCM==> uend point= " + dsmEndpoint);
 		ClientResponse createDcmResponse = registryRepoClient.postResource(dsmEndpoint, dcm);
 		
 		int dcmStatus = createDcmResponse.getStatus();
@@ -99,9 +103,9 @@ public class BusinessImp
 			{
 				ObjectMapper mapper = new ObjectMapper();
 				String createDsmResponseString = createDcmResponse.getEntity(String.class);
-				DataConsumerManifest newDcm = new DataConsumerManifest();
+				DCM newDcm = new DCM();
 				newDcm = mapper.readValue(createDsmResponseString, newDcm.getClass());
-				System.out.println("BusinessImp:createDCM==>newDsm.id=" + newDcm.getDataConsumerManifestId());
+				System.out.println("BusinessImp:createDCM==>newDsm.id=" + newDcm.getUri());
 				return newDcm;
 			}
 			catch (ClientHandlerException | UniformInterfaceException | IOException e)
@@ -124,7 +128,7 @@ public class BusinessImp
 	public DataChannelDescriptor ctreateDcD(DataChannelDescriptor dcd)
 	{
 		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
-				+ "/" + props.getProperty("root") + "/" + props.getProperty("DCD");
+				 + "/" + props.getProperty("DCD") + "/";
 		
 		//check if dcd is null
 		if (dcd==null)
@@ -180,7 +184,8 @@ public class BusinessImp
 		RegistrationResult res = new RegistrationResult();
 		
 		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
-		+ "/" + props.getProperty("root") + "/" + props.getProperty("DSM") + "/uri";
+		 + "/" + props.getProperty("DSM") + "/uri/";
+
 		
 		System.out.println("BusinessImp:deleteDSM==> dsmEndpoint= " + dsmEndpoint);
 		System.out.println("BusinessImp:deleteDSM==> dsmUri= " + dsmUri);
@@ -239,7 +244,9 @@ public class BusinessImp
 		RegistrationResult res = new RegistrationResult();
 		
 		String dcmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
-		+ "/" + props.getProperty("root") + "/" + props.getProperty("DCM") + "/uri";
+		 + "/" + props.getProperty("DCM") + "/uri";
+		
+		//TODO: check uris
 		
 		ClientResponse deleteDcmResponse = registryRepoClient.deleteResource(dcmEndpoint, dcmUri);
 		
@@ -291,22 +298,23 @@ public class BusinessImp
 		}
 	}
 	
-	public ArrayList<DataSourceManifest> getCompatibleDsM(String id)
+	public ArrayList<DSM> getCompatibleDsM(String dsd)
 	{
 		RegistrationResult res = new RegistrationResult();
 		ObjectMapper mapper = new ObjectMapper();
 		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
-		+ "/" + props.getProperty("root") + "/" + props.getProperty("DSM")+ "/dcm";
-		
+		 + "/" + props.getProperty("DSM")+ "/" +props.getProperty("DSD") +"/";
+
+		System.out.println("BussinesImpl:getCompatibleDsM:endpoint=" + dsmEndpoint);
 		//TODO Is this necessary?
-		if (id==null)
+		if (dsd==null)
 		{
 			res.setStatus(RegistrationResultStatusEnum.NOTFOUND);
 			res.setStatusMessage("There is no list");
 			return null;			
 		}
 		
-		ClientResponse response = registryRepoClient.getResource(dsmEndpoint,id);
+		ClientResponse response = registryRepoClient.getResource(dsmEndpoint,dsd);
 //		System.out.println("BussinesImpl:getCompatibleDsM:response=" + response.toString());
 		
 		if (response.getStatus()==200)
@@ -316,8 +324,8 @@ public class BusinessImp
 			
 			try
 			{
-				DataSourceManifest[] dsmTable =mapper.readValue(output,DataSourceManifest[].class);
-				ArrayList<DataSourceManifest> dsmList = new ArrayList<DataSourceManifest>();
+				DSM[] dsmTable =mapper.readValue(output,DSM[].class);
+				ArrayList<DSM> dsmList = new ArrayList<DSM>();
 				dsmList.addAll(Arrays.asList(dsmTable));
 				return dsmList; 
 			}
@@ -349,6 +357,7 @@ public class BusinessImp
 		return true;
 	}
 
+/*	//TODO possible to be deleted
 	public ArrayList<DataSourceDefinition> getDataSourceDefinition ()
 	{
 		ObjectMapper mapper = new ObjectMapper();
@@ -376,6 +385,8 @@ public class BusinessImp
 		return null;
 	}
 	
+	
+	//TODO possible to be deleted
 	public ArrayList<DataTopic> getDataTopics ()
 	{
 		ObjectMapper mapper = new ObjectMapper();
@@ -404,4 +415,5 @@ public class BusinessImp
 		return null;
 	}
 
+*/
 }
