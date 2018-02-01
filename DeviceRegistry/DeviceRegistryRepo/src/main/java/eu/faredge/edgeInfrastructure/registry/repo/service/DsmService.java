@@ -74,4 +74,19 @@ public class DsmService implements DsmServiceInterface
 			
 	}
 
+	@Override
+	public boolean deleteByUri(String uri) {
+		DSM rtnDsm = dsmrepo.findByUri(uri);
+		if (rtnDsm==null)
+		{
+			return false;
+		}
+		else
+		{
+			dsmrepo.delete(rtnDsm);
+			return true;
+		}
+	}
+	
+
 }

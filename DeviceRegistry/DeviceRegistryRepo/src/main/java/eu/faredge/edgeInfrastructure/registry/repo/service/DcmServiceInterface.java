@@ -10,6 +10,7 @@ public interface DcmServiceInterface
 	DCM findByMacAddress(String macAddress);
 	List<DCM> getAllDcms();
 	boolean delete(DCM dcm);
+	boolean deleteByUri(String uri);
 	boolean addDcm(DCM dcm);
 //	void deleteByid(String Id);
 //	void deleteBymacAddress(String macAddress);

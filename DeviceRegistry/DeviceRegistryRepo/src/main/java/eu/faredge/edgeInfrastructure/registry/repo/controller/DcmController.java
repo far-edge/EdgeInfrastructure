@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -23,18 +24,20 @@ public class DcmController
     @Autowired
     private DcmServiceInterface dcmService;
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity <List<DCM>> findAll()
     {
+    	HttpStatus status;
     	List<DCM> alldcm = dcmService.getAllDcms();
     	if (alldcm==null)
-    		return new ResponseEntity<List<DCM>>(alldcm,HttpStatus.NOT_FOUND);
+    		status =HttpStatus.NOT_FOUND;
     	else
-    		return new ResponseEntity<List<DCM>>(dcmService.getAllDcms(),HttpStatus.OK);
+    		status =HttpStatus.OK;
+    	return new ResponseEntity<List<DCM>>(alldcm,status);
     }
     
     @RequestMapping(value = "/uri", method = RequestMethod.GET)
-    public ResponseEntity<DCM> findByUri(String uri)
+    public ResponseEntity<DCM> findByUri(@RequestParam (name="id")String uri)
     {
         DCM result;
         result = dcmService.findByUri(uri);
@@ -46,8 +49,8 @@ public class DcmController
         }
     }
     
-    @RequestMapping(value = "/macAddress/{macAddress}", method = RequestMethod.GET)
-    public ResponseEntity<DCM> findByMacAddress(@PathVariable("macAddress") String macAddress)
+    @RequestMapping(value = "/macAddress/{id}", method = RequestMethod.GET)
+    public ResponseEntity<DCM> findByMacAddress(@PathVariable("id") String macAddress)
     {
         DCM result;
         result = dcmService.findByMacAddress(macAddress);
@@ -75,10 +78,22 @@ public class DcmController
 	}
     
     
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)    
+    @RequestMapping(value = "/", method = RequestMethod.DELETE)    
     public ResponseEntity<String> deleteDcm(@RequestBody DCM dcm)
     {
     	boolean flag = dcmService.delete(dcm);
+    	HttpStatus status;
+    	if (flag==false)
+    		status = HttpStatus.NO_CONTENT;
+    	else 
+    		status = HttpStatus.OK;
+    	return new ResponseEntity<String>("deleted",status);
+    }
+    
+    @RequestMapping(value = "/uri", method = RequestMethod.DELETE)    
+    public ResponseEntity<String> deleteDcmByUri(@RequestParam (name="id") String uri)
+    {
+    	boolean flag = dcmService.deleteByUri(uri);
     	HttpStatus status;
     	if (flag==false)
     		status = HttpStatus.NO_CONTENT;

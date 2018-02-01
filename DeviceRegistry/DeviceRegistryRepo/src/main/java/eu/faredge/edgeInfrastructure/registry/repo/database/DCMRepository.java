@@ -7,6 +7,7 @@ public interface DCMRepository extends JpaRepository<DCM, Integer>
 {
 	DCM findByUri(String uri);
 	DCM findByMacAddress(String macAddress);
+//	boolean deleteByUri(String uri);
 //	List<DCM> findAll();
 //	void delete (@Param ("id") int id);
 //	DCM save (DCM dcm);

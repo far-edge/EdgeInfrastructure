@@ -42,7 +42,7 @@ public class DcmService implements DcmServiceInterface
 	public synchronized boolean addDcm(DCM dcm)
 	{
         DCM retdcm = dcmrepo.findByUri(dcm.getUri()); 	
-            if (retdcm!=null)
+        if (retdcm!=null)
 	           return false;
         retdcm = dcmrepo.findByMacAddress(dcm.getMacAddress());
         if (retdcm!=null)
@@ -65,6 +65,20 @@ public class DcmService implements DcmServiceInterface
 			return true;
 		}
 			
+	}
+
+	@Override
+	public boolean deleteByUri(String uri) {
+		DCM rtnDcm = dcmrepo.findByUri(uri);
+		if (rtnDcm==null)
+		{
+			return false;
+		}
+		else
+		{
+			dcmrepo.delete(rtnDcm);
+			return true;
+		}
 	}
 
 }

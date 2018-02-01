@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -23,7 +24,7 @@ public class DsmController
 	@Autowired
 	private DsmServiceInterface dsmService;
 	
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity <List<DSM>> findAll()
     {
     	List<DSM> alldsm = dsmService.getAllDsms();
@@ -34,7 +35,7 @@ public class DsmController
     }
     
     @RequestMapping(value = "/uri", method = RequestMethod.GET)
-    public ResponseEntity<DSM> findByUri(String uri)
+    public ResponseEntity<DSM> findByUri(@RequestParam (name="id")String uri)
     {
         DSM result;
         result = dsmService.findByUri(uri);
@@ -47,7 +48,7 @@ public class DsmController
     }
     
     @RequestMapping(value = "/dsd", method = RequestMethod.GET)
-    public ResponseEntity<List<DSM>> findByDsd(String dsd)
+    public ResponseEntity<List<DSM>> findByDsd(@RequestParam(name ="id") String dsd)
     {
         List<DSM> result = dsmService.findByDataSourceDefinitionReferenceID(dsd);
         if (result==null)
@@ -87,10 +88,22 @@ public class DsmController
 	}
     
     
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)    
+    @RequestMapping(value = "/", method = RequestMethod.DELETE)    
     public ResponseEntity<String> deleteDsm(@RequestBody DSM dsm)
     {
     	boolean flag = dsmService.delete(dsm);
+    	HttpStatus status;
+    	if (flag==false)
+    		status = HttpStatus.NO_CONTENT;
+    	else 
+    		status = HttpStatus.OK;
+    	return new ResponseEntity<String>("deleted",status);
+    }
+    
+    @RequestMapping(value = "/uri", method = RequestMethod.DELETE)    
+    public ResponseEntity<String> deleteDsmByUri(String uri)
+    {
+    	boolean flag = dsmService.deleteByUri(uri);
     	HttpStatus status;
     	if (flag==false)
     		status = HttpStatus.NO_CONTENT;
