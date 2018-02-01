@@ -91,7 +91,7 @@ public class DcmController
     }
     
     @RequestMapping(value = "/uri", method = RequestMethod.DELETE)    
-    public ResponseEntity<String> deleteDcmByUri(@RequestParam (name="id") String uri)
+    public ResponseEntity<String> deleteDcmByUri(String uri)
     {
     	boolean flag = dcmService.deleteByUri(uri);
     	HttpStatus status;
