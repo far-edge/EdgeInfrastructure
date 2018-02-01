@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
 import eu.faredge.edgeInfrastructure.registry.models.DSM;
-import eu.faredge.edgeInfrastructure.registry.models.DataChannelDescriptor;
+import eu.faredge.edgeInfrastructure.registry.models.DCD;
 import eu.faredge.edgeInfrastructure.registry.models.DCM;
 
 
@@ -24,7 +24,7 @@ public interface ConsumerRegistrationInterface {
 	public ArrayList<DSM> getCompatibleDSM(String id);
 	
 	@RequestMapping(value="accessToDSM",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public DataChannelDescriptor getAccessToDSM(@RequestBody DataChannelDescriptor dcd);
+	public DCD getAccessToDSM(@RequestBody DCD dcd);
 	
 
 }

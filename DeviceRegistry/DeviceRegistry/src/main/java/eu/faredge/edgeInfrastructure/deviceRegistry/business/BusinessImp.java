@@ -16,11 +16,8 @@ import eu.faredge.edgeInfrastructure.deviceRegistry.RegistryConfiguration;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResultStatusEnum;
 import eu.faredge.edgeInfrastructure.registry.models.DSM;
-import eu.faredge.edgeInfrastructure.registry.models.DataChannelDescriptor;
+import eu.faredge.edgeInfrastructure.registry.models.DCD;
 import eu.faredge.edgeInfrastructure.registry.models.DCM;
-import eu.faredge.edgeInfrastructure.registry.models.DataSourceDefinition;
-
-import eu.faredge.edgeInfrastructure.registry.models.DataTopic;
 
 
 public class BusinessImp
@@ -76,7 +73,7 @@ public class BusinessImp
 		}
 		else
 		{
-			System.out.println("BusinessImp:createDSM==>Datasource Manifest creation failed " + createDsmResponse.getStatus());
+			System.out.println("REgistry:BusinessImp:createDSM==>Datasource Manifest creation failed with status:" + createDsmResponse.getStatus());
 			return null;
 		}
 
@@ -125,7 +122,7 @@ public class BusinessImp
 		}
 	}
 
-	public DataChannelDescriptor ctreateDcD(DataChannelDescriptor dcd)
+	public DCD ctreateDcD(DCD dcd)
 	{
 		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
 				 + "/" + props.getProperty("DCD") + "/";
@@ -155,9 +152,9 @@ public class BusinessImp
 			{
 				ObjectMapper mapper = new ObjectMapper();
 				String createDsdResponseString = createDcdResponse.getEntity(String.class);
-				DataChannelDescriptor newDcd = new DataChannelDescriptor();
+				DCD newDcd = new DCD();
 				newDcd = mapper.readValue(createDsdResponseString, newDcd.getClass());
-				System.out.println("BusinessImp:createDCD==>newDcd.id=" + newDcd.getDataChannelDescriptorId());
+				System.out.println("BusinessImp:createDCD==>newDcd.id=" + newDcd.getUri());
 				return newDcd;
 			}
 			catch (ClientHandlerException | UniformInterfaceException | IOException e)

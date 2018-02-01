@@ -13,7 +13,7 @@ import eu.faredge.edgeInfrastructure.deviceRegistry.business.BusinessImp;
 import eu.faredge.edgeInfrastructure.deviceRegistry.business.LedgerCredentials;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResultStatusEnum;
-import eu.faredge.edgeInfrastructure.registry.models.DataChannelDescriptor;
+import eu.faredge.edgeInfrastructure.registry.models.DCD;
 import eu.faredge.edgeInfrastructure.registry.models.DCM;
 import eu.faredge.edgeInfrastructure.registry.models.DSM;
 import io.swagger.annotations.Api;
@@ -26,16 +26,17 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 	private BusinessImp bimpl = new BusinessImp();
 
 	@RequestMapping(value = "ConsumerRegistration", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public RegistrationResult ConsumerRegistration(@RequestBody DCM manifest)// , Object credentials)
-	{		
+	public RegistrationResult ConsumerRegistration(@RequestBody DCM manifest) // , Object credentials)
+	{
+		try 
+		{
+			
 		//TODO delete these 3 lines
 		System.out.println("Controller:ConsumerRegistration==> dcmuri= " + manifest.getUri());
 		System.out.println("Controller:ConsumerRegistration==> dcmMac= " + manifest.getMacAddress());
 		String user="george";
 		String password="george123";
-
-		try 
-		{
+			
 			RegistrationResult res = new RegistrationResult();
 			boolean loggin = true;								//local authentication
 			boolean authorized = false;							//Ledger authorization
@@ -84,7 +85,8 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		{
 			RegistrationResult res = new RegistrationResult();
 			res.setStatus(RegistrationResultStatusEnum.SYSTEMFAILURE);
-			res.setStatusMessage(e.getMessage());
+			res.setStatusMessage("error parsing :" + e.getMessage());
+			res.setBody("error");
 			return res;
 		}
 
@@ -163,9 +165,9 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 	}
 	
 	@RequestMapping(value="accessToDSM",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public DataChannelDescriptor getAccessToDSM(@RequestBody DataChannelDescriptor dcd)
+	public DCD getAccessToDSM(@RequestBody DCD dcd)
 	{
-		DataChannelDescriptor finalDcd =new DataChannelDescriptor();
+		DCD finalDcd =new DCD();
 		//String user="george";
 		//String password="george123";
 		
@@ -179,7 +181,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		{
 			return null;
 		}
-		if ((dcd.getDataConsumerManifest().getUri()==null)||(dcd.getDataSourceManifest().getUri()==null))
+		if ((dcd.getDcmId()==null)||(dcd.getDsmId()==null))
 		{
 			System.out.println("Controller:getAccessToDSM==> ids do not exist ");
 			return null;
@@ -195,7 +197,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		}
 		
 		// If logged-in check access authorization. Authorization through Ledger Client 
-		authorized = bimpl.authorizeAccesstoDSM(dcd.getDataConsumerManifest().getUri(), dcd.getDataSourceManifest().getUri());
+		authorized = bimpl.authorizeAccesstoDSM(dcd.getDcmId(), dcd.getDsmId());
 		if (!authorized)
 		{
 			res.setStatus(RegistrationResultStatusEnum.DENIED);
@@ -215,7 +217,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		}
 		
 		// request access to data source
-		configure = bimpl.configureAccess(finalDcd.getDataConsumerManifest().getMacAddress(), finalDcd.getDataSourceManifest().getMacAddress());
+		configure = bimpl.configureAccess(finalDcd.getDcmId(), finalDcd.getDsmId());
 		if (configure==false)
 		{
 			res.setStatus(RegistrationResultStatusEnum.DENIED);
