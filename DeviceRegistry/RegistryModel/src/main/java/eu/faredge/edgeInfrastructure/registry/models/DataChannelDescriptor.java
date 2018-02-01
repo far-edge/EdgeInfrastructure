@@ -7,8 +7,8 @@ import java.util.UUID;
 public class DataChannelDescriptor extends BaseEntity {
 
 	private UUID dataChannelDescriptorId; 
-	private DataSourceManifest dataSourceManifest;	
-	private DataConsumerManifest dataConsumerManifest;
+	private DSM dataSourceManifest;	
+	private DCM dataConsumerManifest;
 	private Date validFrom;
 	private Date expirationDateTime;
 	
@@ -18,16 +18,16 @@ public class DataChannelDescriptor extends BaseEntity {
 	public void setDataChannelDescriptorId(UUID dataChannelDescriptorId) {
 		this.dataChannelDescriptorId = dataChannelDescriptorId;
 	}
-	public DataSourceManifest getDataSourceManifest() {
+	public DSM getDataSourceManifest() {
 		return dataSourceManifest;
 	}
-	public void setDataSourceManifest(DataSourceManifest dataSourceManifest) {
+	public void setDataSourceManifest(DSM dataSourceManifest) {
 		this.dataSourceManifest = dataSourceManifest;
 	}
-	public DataConsumerManifest getDataConsumerManifest() {
+	public DCM getDataConsumerManifest() {
 		return dataConsumerManifest;
 	}
-	public void setDataConsumerManifest(DataConsumerManifest dataConsumerManifest) {
+	public void setDataConsumerManifest(DCM dataConsumerManifest) {
 		this.dataConsumerManifest = dataConsumerManifest;
 	}
 	public Date getValidFrom() {
