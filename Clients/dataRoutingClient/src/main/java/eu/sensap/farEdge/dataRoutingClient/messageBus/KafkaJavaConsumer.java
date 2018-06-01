@@ -5,9 +5,6 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collections;
 import java.util.Properties;
 
@@ -18,7 +15,7 @@ public class KafkaJavaConsumer {
 
     private final static String BOOTSTRAP_SERVERS = "localhost:9092,localhost:9093,localhost:9094";
     //TODO CONFIGURE SLFJ4 LOGGER PROPERLY!
-    private final static Logger log = LoggerFactory.getLogger(KafkaJavaConsumer.class);
+    //private final static Logger log = LoggerFactory.getLogger(KafkaJavaConsumer.class);
 
     private static Consumer<Long, String> createConsumer(String topic) {
         final Properties props = new Properties();

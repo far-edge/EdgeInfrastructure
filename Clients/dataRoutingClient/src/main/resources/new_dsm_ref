@@ -1,0 +1,19 @@
+{
+	"uri": "",
+	"macAddress": "",
+	"dataSourceDefinitionReferenceID": "",
+	"dataSourceDefinitionInterfaceParameters": {
+		"parameter": [{
+			"key": "bootstrap.servers",
+			"value": "localhost:9092"
+		},
+		{
+			"key": "client.id",
+			"value": "FarEdgeGateway"
+		},
+		{
+			"key": "value.serializer",
+			"value": "org.apache.kafka.common.serialization.StringSerializer"
+		}]
+	}
+}

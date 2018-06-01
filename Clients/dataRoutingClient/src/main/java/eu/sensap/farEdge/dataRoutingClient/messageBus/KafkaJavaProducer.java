@@ -2,6 +2,9 @@ package eu.sensap.farEdge.dataRoutingClient.messageBus;
 
 
 import org.apache.kafka.clients.producer.*;
+
+import eu.sensap.farEdge.dataRoutingClient.models.ConfigurationEnv;
+
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -12,7 +15,14 @@ import java.util.concurrent.TimeUnit;
 public class KafkaJavaProducer
 {
 	
-
+	private ConfigurationEnv env;
+	private static Producer<Long, String> producer;
+		
+	public KafkaJavaProducer (ConfigurationEnv env)
+	{
+		this.setEnv(env);
+		producer = createProducer(env.getKafkaProps());
+	}
 
     // creates a new static instance of Producer due to 'prop' properties
 	private static Producer<Long, String> createProducer(Properties prop)
@@ -28,20 +38,53 @@ public class KafkaJavaProducer
 //        }
         return new KafkaProducer<>(prop);
     }
-
-    // connects to a KAFKA with properties 'props' and publishes one single 'message' in a specific 'topic' 
-	public boolean runSyncProducer(String topic, String message, Properties props) throws Exception
+		
+	public boolean runSyncProducer(String message, String topic) throws Exception
 	{
 		System.out.println("running 'runSyncProducer' in KafkaJavaProducer");
 //		Thread.currentThread().setContextClassLoader(null);
 		boolean status=false;
-		final Producer<Long, String> producer = createProducer(props);
+
 		long time = System.currentTimeMillis();
 		
 		try
 		{
 			long index = time;
 			final ProducerRecord<Long, String> record = new ProducerRecord<>(topic, index, message);
+			RecordMetadata metadata = producer.send(record).get();
+			long elapsedTime = System.currentTimeMillis() - time;
+			System.out.printf("sent record(key=%s value=%s) " + "meta(partition=%d, offset=%d) topic=%s time=%d\n", record.key(), record.value(), metadata.partition(), metadata.offset(), record.topic(), elapsedTime);
+			status = true;
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();		
+		}
+		return status;
+	}
+	
+	
+	public void close()
+	{
+		producer.flush();
+		producer.close();
+	}
+	
+	
+
+    // connects to a KAFKA with properties 'props' and publishes one single 'message' in a specific 'topic' 
+	public boolean runSyncProducer(ConfigurationEnv env , String message) throws Exception
+	{
+		System.out.println("running 'runSyncProducer' in KafkaJavaProducer");
+//		Thread.currentThread().setContextClassLoader(null);
+		boolean status=false;
+		final Producer<Long, String> producer = createProducer(env.getKafkaProps());
+		long time = System.currentTimeMillis();
+		
+		try
+		{
+			long index = time;
+			final ProducerRecord<Long, String> record = new ProducerRecord<>(env.getTopic(), index, message);
 			RecordMetadata metadata = producer.send(record).get();
 			long elapsedTime = System.currentTimeMillis() - time;
 			System.out.printf("sent record(key=%s value=%s) " + "meta(partition=%d, offset=%d) topic=%s time=%d\n", record.key(), record.value(), metadata.partition(), metadata.offset(), record.topic(), elapsedTime);
@@ -115,4 +158,12 @@ public class KafkaJavaProducer
             producer.close();
         }
     }
+
+	public ConfigurationEnv getEnv() {
+		return env;
+	}
+
+	public void setEnv(ConfigurationEnv env) {
+		this.env = env;
+	}
 }

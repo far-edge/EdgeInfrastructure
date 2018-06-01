@@ -5,9 +5,10 @@
  */
 package eu.sensap.farEdge.dataRoutingClient.interfaces;
 
-import eu.sensap.farEdge.dataRoutingClient.models.ConfigurationEnv;
+import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
+import eu.faredge.edgeInfrastructure.registry.models.dsm.DSM;
 import eu.sensap.farEdge.dataRoutingClient.models.Credentials;
-import eu.sensap.farEdge.dataRoutingClient.models.RegistrationResult;
+
 
 /***
  * Interface which implements registration operations
@@ -19,27 +20,28 @@ import eu.sensap.farEdge.dataRoutingClient.models.RegistrationResult;
 public interface DeviceRegisterInterface
 {
 	
+	public void create(String registryUri);
+	
 	/***
 	 * register method: A device registers to the registry 
-	 * @param id
+	 * @param dsm: data source manifest
 	 * @param credentials
-	 * @param configurationEnv
 	 * @return  RegistrationResult
 	 */
-	public RegistrationResult registerDevice(String id, Credentials credentials, ConfigurationEnv configurationEnv );
+	public RegistrationResult registerDevice(DSM dsm, Credentials credentials);
 	
 	/***
 	 * unRegister method : A device unregisters from the registry
 	 * @return RegistrationResult
 	 */
-	public RegistrationResult unRegisterDevice();
+	public RegistrationResult unRegisterDevice(String uri, Credentials credentials);
 	
 	
 	/**
 	 * isRegistered method: Returns the registration status of a device
 	 * @return boolean 
 	 */
-	public boolean isRegistered();
+	public boolean isRegistered(DSM dsm, Credentials credentials);
 	
 
 }

@@ -8,6 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>dataRoutingClient</name>
 	<description>Registry and Kafka Connector Client </description>
+	<packaging>jar</packaging>
 
 
 	<properties>
@@ -57,16 +58,23 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
+			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.21</version>
 		</dependency>
+		<!--dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.21</version>
+		</dependency-->
 		<dependency>
 			<groupId>eu.faredge.edgeInfrastructure</groupId>
   			<artifactId>registryModel</artifactId>
 			<version>0.5.0-SNAPSHOT</version>
 		</dependency>
+
+		
 	</dependencies>
-
-
+	
+	
 
 </project>

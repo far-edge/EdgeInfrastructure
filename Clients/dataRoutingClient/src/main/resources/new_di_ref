@@ -1,0 +1,38 @@
+{
+  "id": "di://SmartFactory/EdgeGateway1/KAFKA",
+  "communicationProtocol": "KAFKA",
+  "parameters": {
+    "parameter": [
+      {
+        "name": "bootstrap.servers",
+        "description": "kafka server",
+        "dataType": "url",
+        "defaultValue": "localhost:9092"
+      },
+      {
+        "name": "client.id",
+        "description": "id of client",
+        "dataType": "String",
+        "defaultValue": "FarEdgeGateway"
+      },
+      {
+        "name": "value.serializer",
+        "description": "Class name for the values Serializer",
+        "dataType": "String",
+        "defaultValue": "org.apache.kafka.common.serialization.StringSerializer"
+      },
+      {
+        "name": "key.serializer",
+        "description": "Class name for the key Serializer",
+        "dataType": "String",
+        "defaultValue": "org.apache.kafka.common.serialization.LongSerializer"
+      },
+      {
+        "name": "topic",
+        "description": "topic of the ds",
+        "dataType": "String",
+        "defaultValue": ""
+      }
+    ]
+  }
+}

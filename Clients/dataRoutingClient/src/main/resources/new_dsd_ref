@@ -1,0 +1,9 @@
+{
+  "id": "",  
+  "dataInterfaceReferenceID": "di://SmartFactory/EdgeGateway1/KAFKA",
+  "dataKindReferenceIDs": {
+    "dataKindReferenceID": [
+      ""
+    ]
+  }
+}

@@ -12,8 +12,11 @@ import java.util.Properties;
  */
 public class ConfigurationEnv 
 {	
+//	private Properties kafkaProps;
 	private String topic;
-	private Properties environments;
+//	private String registryUri;
+//	private String edgeUri;
+	private Properties kafkaProps;
 	
 	// Getters and setters
 	 
@@ -25,12 +28,25 @@ public class ConfigurationEnv
 	{
 		this.topic = topic;
 	}
-	public Properties getEnvironments()
+	public Properties getKafkaProps()
 	{
-		return environments;
+		return kafkaProps;
 	}
-	public void setEnvironments(Properties environments)
+	public void setKafkaProps(Properties kafkaProps)
 	{
-		this.environments = environments;
+		this.kafkaProps = kafkaProps;
 	}
+//	public String getRegistryUri() {
+//		return registryUri;
+//	}
+//	public void setRegistryUri(String registryUri) {
+//		this.registryUri = registryUri;
+//	}
+//	public String getEdgeUri() {
+//		return edgeUri;
+//	}
+//	public void setEdgeUri(String edgeUri) {
+//		this.edgeUri = edgeUri;
+//	}
+
 }
