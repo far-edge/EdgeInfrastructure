@@ -1,0 +1,24 @@
+{
+	"id": "dsm://58114eda-2885-4805-b0fa-fba9fb607ce0",
+	"uri": "dsm://Festo/EnergyConsumption",
+	"macAddress": "Festo",
+	"dataSourceDefinitionReferenceID": "dsd://SmartFactory/Festo/EnergyConsumption",
+	"dataSourceDefinitionInterfaceParameters": {
+		"parameter": [{
+			"key": "host",
+			"value": "tcp://192.168.253.240:1883"
+		},
+		{
+			"key": "username",
+			"value": "faredge"
+		},
+		{
+			"key": "password",
+			"value": "FarEdge"
+		},
+		{
+			"key": "topic",
+			"value": "Festo/EnergyConsumption"
+		}]
+	}
+}

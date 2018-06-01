@@ -1,0 +1,9 @@
+{
+  "id": "dsd://Festo/EnergyConsumption",
+  "dataInterfaceReferenceID": "di://SmartFactory/MQTT",
+  "dataKindReferenceIDs": {
+    "dataKindReferenceID": [
+      "dk://Consumption/power/EnergyConsumption/instant/single"
+    ]
+  }
+}

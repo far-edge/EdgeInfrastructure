@@ -1,0 +1,7 @@
+{
+  "id": "348421ba-e846-466b-9541-492adc9e3818",
+  "name": "Total real power in plain text",
+  "description": "Total real power values (in VA) in plain text.",
+  "format": "Plain text",
+  "quantityKind": "Power"
+}

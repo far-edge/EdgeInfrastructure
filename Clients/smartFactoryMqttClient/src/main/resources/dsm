@@ -1,0 +1,29 @@
+{
+  "id": "6906e84d-435a-42bb-a678-0b6012142082",
+  "macAddress": "8c:85:90:96:40:cd",
+  "dataSourceDefinitionReferenceID": "38358d3d-fa66-4f30-9f33-774e11ca884b",
+  "dataSourceDefinitionInterfaceParameters": {
+    "parameter": [
+      {
+        "key": "host",
+        "value": "192.168.253.240"
+      },
+      {
+        "key": "port",
+        "value": 1883
+      },
+      {
+        "key": "username",
+        "value": "faredge"
+      },
+      {
+        "key": "password",
+        "value": "FarEdge"
+      },
+      {
+        "key": "topic",
+        "value": "PhoenixIB/TotalRealPower"
+      }
+    ]
+  }
+}

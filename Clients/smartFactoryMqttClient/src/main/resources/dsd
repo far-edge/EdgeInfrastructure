@@ -1,0 +1,10 @@
+{
+  "id": "38358d3d-fa66-4f30-9f33-774e11ca884b",
+  "name": "Total real power in JSON format over MQTT",
+  "dataInterfaceReferenceID": "c64709bb-6565-41fe-8256-f6802ad9a538",
+  "dataKindReferenceIDs": {
+    "dataKindReferenceID": [
+      "348421ba-e846-466b-9541-492adc9e3818"
+    ]
+  }
+}

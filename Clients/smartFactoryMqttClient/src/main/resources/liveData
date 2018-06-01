@@ -1,0 +1,18 @@
+{
+	"id": "",
+	"dataSourceManifestReferenceID": "",
+	"mobile": false,
+	"timestamp": "",
+	"observation": [{
+		"id": "",
+		"name": "",
+		"dataKindReferenceID": "",
+		"timestamp": "",
+		"location": {
+				"latitude": "49.428983",
+				"longitude": "7.750885"
+			
+		},
+		"value": ""
+	}]
+}

@@ -1,0 +1,7 @@
+{
+  "id": "dk://Consumption/power/EnergyConsumption/instant/single/value",
+  "description": "Energy Consumption",
+  "modelType": "single",
+  "format": "value",
+  "quantityKind": "qk://Consumption/power/EnergyConsumption/instant"
+}

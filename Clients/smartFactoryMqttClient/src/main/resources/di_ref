@@ -1,0 +1,32 @@
+{
+  "id": "di://SmartFactory/MQTT",
+  "communicationProtocol": "MQTT",
+  "parameters": {
+    "parameter": [
+      {
+        "name": "host",
+        "description": "MQTT server",
+        "dataType": "url",
+        "defaultValue": "tcp://localhost:1883"
+      },
+      {
+        "name": "username",
+        "description": "the username",
+        "dataType": "String",
+        "defaultValue": "username"
+      },
+      {
+        "name": "password",
+        "description": "password",
+        "dataType": "String",
+        "defaultValue": "password"
+      },
+      {
+        "name": "topic",
+        "description": "topic",
+        "dataType": "String",
+        "defaultValue": "ApparentPower"
+      }
+    ]
+  }
+}
