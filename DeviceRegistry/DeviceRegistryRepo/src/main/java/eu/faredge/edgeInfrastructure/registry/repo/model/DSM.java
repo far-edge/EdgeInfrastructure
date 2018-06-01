@@ -26,10 +26,13 @@ public class DSM implements Serializable
 	@GeneratedValue (strategy = GenerationType.AUTO)
 	@Column(name="dsm_id")
 	@JsonIgnore
-	private Integer Id;
+	private Integer dsm_id;
 
-	@Column(name="uri", unique=true)
+	@Column(name="uri", unique=true)	
 	private String uri;
+	
+	@Column(name="id", unique=true)
+	private String id;
 	
 	@Column(name="macAddress", unique=true)
 	private String macAddress;
@@ -45,15 +48,27 @@ public class DSM implements Serializable
 	//Getters and Setters
 	
 	@JsonIgnore
-	public Integer getId()
+	public Integer getDsm_id()
 	{
-		return Id;
+		return dsm_id;
 	}
 
 	@JsonIgnore
-	public void setId(Integer id)
+	public void setDsm_id(Integer dsm_id)
 	{
-		Id = id;
+		this.dsm_id = dsm_id;
+	}
+	
+
+	public String getId()
+	{
+		return id;
+	}
+
+	
+	public void setId(String id)
+	{
+		this.id = id;
 	}
 
 	public String getUri()

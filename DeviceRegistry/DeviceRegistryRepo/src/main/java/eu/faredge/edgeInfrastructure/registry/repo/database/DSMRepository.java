@@ -9,6 +9,7 @@ import eu.faredge.edgeInfrastructure.registry.repo.model.DSM;
 public interface DSMRepository extends JpaRepository<DSM, Integer>
 {
 	DSM findByUri(String uri);
+	DSM findById(String id);
 	DSM findByMacAddress(String macAddress);
 	List<DSM> findByDataSourceDefinitionReferenceID(String dataSourceDefinitionReferenceID);
 	//boolean deleteByUri(String uri);

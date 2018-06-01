@@ -13,9 +13,9 @@ import eu.faredge.edgeInfrastructure.deviceRegistry.business.BusinessImp;
 import eu.faredge.edgeInfrastructure.deviceRegistry.business.LedgerCredentials;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResultStatusEnum;
-import eu.faredge.edgeInfrastructure.registry.models.DCD;
-import eu.faredge.edgeInfrastructure.registry.models.DCM;
-import eu.faredge.edgeInfrastructure.registry.models.DSM;
+import eu.faredge.edgeInfrastructure.registry.models.dcd.DCD;
+import eu.faredge.edgeInfrastructure.registry.models.dcm.DCM;
+import eu.faredge.edgeInfrastructure.registry.models.dsm.DSM;
 import io.swagger.annotations.Api;
 
 @RestController
@@ -32,10 +32,12 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		{
 			
 		//TODO delete these 3 lines
-		System.out.println("Controller:ConsumerRegistration==> dcmuri= " + manifest.getUri());
+		System.out.println("Controller:ConsumerRegistration==> dcmuri= " + manifest.getId());
 		System.out.println("Controller:ConsumerRegistration==> dcmMac= " + manifest.getMacAddress());
 		String user="george";
 		String password="george123";
+		
+		manifest.setUri(manifest.getId());
 			
 			RegistrationResult res = new RegistrationResult();
 			boolean loggin = true;								//local authentication
@@ -93,7 +95,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 	}
 	
 	@RequestMapping(value = "/ConsumerRegistration", method = RequestMethod.DELETE)
-	public RegistrationResult ConsumerRegistration(String dsd) // , Object credentials)
+	public RegistrationResult ConsumerRegistration(String id) // , Object credentials)
 	{
 		String user="george";
 		String password="george123";
@@ -122,7 +124,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		}
 		
 		// if authorized and authenticated calls registry-repo to delete the DCM 
-		deleteStatus = bimpl.deleteDcm(dsd);
+		deleteStatus = bimpl.deleteDcm(id);
 		if (!deleteStatus)
 		{
 			res.setStatus(RegistrationResultStatusEnum.SYSTEMFAILURE);
@@ -130,11 +132,11 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 			return res;
 		}
 		
-		String statusMessage = "Unregister Succesfull of id=" + dsd;
+		String statusMessage = "Unregister Succesfull of id=" + id;
 		RegistrationResultStatusEnum status = RegistrationResultStatusEnum.SUCCESS;
 		res.setStatus(status);
 		res.setStatusMessage(statusMessage);
-		System.out.println("Controller:ConsumerRegistration==> unregistered! id=" + dsd);
+		System.out.println("Controller:ConsumerRegistration==> unregistered! id=" + id);
 		return res;
 	}
 	
@@ -181,11 +183,13 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		{
 			return null;
 		}
-		if ((dcd.getDcmId()==null)||(dcd.getDsmId()==null))
+		if ((dcd.getDataConsumerManifestReferenceID()==null)||(dcd.getDataSourceManifestReferenceID()==null))
 		{
 			System.out.println("Controller:getAccessToDSM==> ids do not exist ");
 			return null;
 		}
+		
+		dcd.setUri(dcd.getId());  //we support both uri and id (till now are the same)
 
 		// Login to service based on credentials
 		if (!loggin)
@@ -197,7 +201,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		}
 		
 		// If logged-in check access authorization. Authorization through Ledger Client 
-		authorized = bimpl.authorizeAccesstoDSM(dcd.getDcmId(), dcd.getDsmId());
+		authorized = bimpl.authorizeAccesstoDSM(dcd.getDataConsumerManifestReferenceID(), dcd.getDataSourceManifestReferenceID());
 		if (!authorized)
 		{
 			res.setStatus(RegistrationResultStatusEnum.DENIED);
@@ -217,7 +221,7 @@ public class ConsumerRegistrationController implements ConsumerRegistrationInter
 		}
 		
 		// request access to data source
-		configure = bimpl.configureAccess(finalDcd.getDcmId(), finalDcd.getDsmId());
+		configure = bimpl.configureAccess(finalDcd.getDataConsumerManifestReferenceID(), finalDcd.getDataSourceManifestReferenceID());
 		if (configure==false)
 		{
 			res.setStatus(RegistrationResultStatusEnum.DENIED);

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
-
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -15,15 +15,16 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import eu.faredge.edgeInfrastructure.deviceRegistry.RegistryConfiguration;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResultStatusEnum;
-import eu.faredge.edgeInfrastructure.registry.models.DSM;
-import eu.faredge.edgeInfrastructure.registry.models.DCD;
-import eu.faredge.edgeInfrastructure.registry.models.DCM;
+import eu.faredge.edgeInfrastructure.registry.models.dcd.DCD;
+import eu.faredge.edgeInfrastructure.registry.models.dcm.DCM;
+import eu.faredge.edgeInfrastructure.registry.models.dsm.DSM;
 
 
 public class BusinessImp
 {
 	private RegistryRepoClient registryRepoClient;
 	private Properties props;
+	private String registryRepoUrl =  "http://" + RegistryConfiguration.variables.get("uri");
 	
 	public BusinessImp()
 	{
@@ -43,16 +44,21 @@ public class BusinessImp
 	
 	public DSM createDsm(DSM dsm)
 	{
-
-		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
+		
+		
+		String dsmEndpoint = this.registryRepoUrl +"/" + props.getProperty("DSM")+ "/";
+		
+//		System.out.println("uri for variables = " + this.registryRepoUrl + ". dsmEndpiont = " + dsmEndpoint);
+		
+		String dsmEndpoint2 = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
 				+"/" + props.getProperty("DSM")+ "/";
+		System.out.println("dsmEndpoint = " + dsmEndpoint);
 		
 		ClientResponse createDsmResponse = registryRepoClient.postResource(dsmEndpoint, dsm);
 		int dsmStatus = createDsmResponse.getStatus();
 		//TODO check if exists return error
 		if ((dsmStatus == 201) || (dsmStatus == 200))
 		{
-
 			try
 			{
 				ObjectMapper mapper = new ObjectMapper();
@@ -69,24 +75,22 @@ public class BusinessImp
 				createDsmResponse.close();
 				return null;
 			}
-
 		}
 		else
 		{
 			System.out.println("REgistry:BusinessImp:createDSM==>Datasource Manifest creation failed with status:" + createDsmResponse.getStatus());
 			return null;
 		}
-
 	}
 
 	public DCM createDcm(DCM dcm)
 	{
+		
+		String dsmEndpoint = this.registryRepoUrl	 + "/" + props.getProperty("DCM") + "/";
 
-		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
+		String dsmEndpoint2 = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
 				 + "/" + props.getProperty("DCM") + "/";
-		
-		
-
+	
 		System.out.println("BusinessImp:createDCM==> dcm=" + dcm.getMacAddress());
 		System.out.println("BusinessImp:createDCM==> uend point= " + dsmEndpoint);
 		ClientResponse createDcmResponse = registryRepoClient.postResource(dsmEndpoint, dcm);
@@ -95,7 +99,6 @@ public class BusinessImp
 		//TODO check if exists return error
 		if ((dcmStatus == 201) || (dcmStatus == 200))
 		{
-
 			try
 			{
 				ObjectMapper mapper = new ObjectMapper();
@@ -124,7 +127,9 @@ public class BusinessImp
 
 	public DCD ctreateDcD(DCD dcd)
 	{
-		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
+		String dsmEndpoint = this.registryRepoUrl	 + "/" + props.getProperty("DCD") + "/";
+		
+		String dsmEndpoint2 = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
 				 + "/" + props.getProperty("DCD") + "/";
 		
 		//check if dcd is null
@@ -175,19 +180,21 @@ public class BusinessImp
 
 	}
 
-	public boolean deleteDsm (String dsmUri)
+	public boolean deleteDsm (String id)
 	{
 		boolean result=false;
 		RegistrationResult res = new RegistrationResult();
 		
-		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
-		 + "/" + props.getProperty("DSM") + "/uri/";
+		String dsmEndpoint = this.registryRepoUrl	 + "/" + props.getProperty("DSM") + "/id/";
+		
+		String dsmEndpoint2 = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
+		 + "/" + props.getProperty("DSM") + "/id/";
 
 		
-		System.out.println("BusinessImp:deleteDSM==> dsmEndpoint= " + dsmEndpoint);
-		System.out.println("BusinessImp:deleteDSM==> dsmUri= " + dsmUri);
+		System.out.println("Registry:BusinessImp:deleteDSM==> dsmEndpoint= " + dsmEndpoint);
+		System.out.println("Registry:BusinessImp:deleteDSM==> dsmId= " + id);
 		
-		ClientResponse deleteDsmResponse = registryRepoClient.deleteResource(dsmEndpoint, dsmUri);
+		ClientResponse deleteDsmResponse = registryRepoClient.deleteResource(dsmEndpoint, id);
 		
 		int dsmStatus = deleteDsmResponse.getStatus();
 		
@@ -240,7 +247,9 @@ public class BusinessImp
 		boolean result=false;
 		RegistrationResult res = new RegistrationResult();
 		
-		String dcmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
+		String dcmEndpoint = this.registryRepoUrl + "/" + props.getProperty("DCM") + "/uri";
+		
+		String dcmEndpoint2 = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
 		 + "/" + props.getProperty("DCM") + "/uri";
 		
 		//TODO: check uris
@@ -299,7 +308,9 @@ public class BusinessImp
 	{
 		RegistrationResult res = new RegistrationResult();
 		ObjectMapper mapper = new ObjectMapper();
-		String dsmEndpoint = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
+		String dsmEndpoint = this.registryRepoUrl + "/" + props.getProperty("DSM")+ "/" +props.getProperty("DSD") +"/";
+		
+		String dsmEndpoint2 = "http://" + props.getProperty("default_host") + ":" + props.getProperty("default_port")
 		 + "/" + props.getProperty("DSM")+ "/" +props.getProperty("DSD") +"/";
 
 		System.out.println("BussinesImpl:getCompatibleDsM:endpoint=" + dsmEndpoint);
@@ -351,7 +362,15 @@ public class BusinessImp
 	public boolean authorizeToLedger(LedgerCredentials credentials) {
 
 		//TODO: connect with Mauro's Ledger client
+		
+		
 		return true;
+	}
+
+	public String createDsmToLedger(DSM manifest) {
+		// TODO Auto-generated method stub
+		UUID id = UUID.randomUUID();		
+		return "dsm://"+id.toString();
 	}
 
 /*	//TODO possible to be deleted

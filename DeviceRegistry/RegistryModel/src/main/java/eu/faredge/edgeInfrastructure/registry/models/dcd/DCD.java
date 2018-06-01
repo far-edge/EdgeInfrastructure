@@ -1,48 +1,27 @@
-package eu.faredge.edgeInfrastructure.registry.repo.model;
+package eu.faredge.edgeInfrastructure.registry.models.dcd;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
-@Table (name ="DCDs")
+
 public class DCD implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue (strategy = GenerationType.AUTO)
-	@Column(name="dcd_id", unique=true)	
+	
 	@JsonIgnore
 	private Integer dcd_id;
-
-	@Column (name="id")
 	private String id;
-	
-	@Column (name="uri")
 	private String uri;
-	
-	@Column (name="dsm_id")
 	private String dataSourceManifestReferenceID;
-	
-	@Column (name="dcm_id")
 	private String dataConsumerManifestReferenceID;
-	
-	@Column (name="validFrom")
 	private Date validFrom;
-	
-	@Column (name="validTo")
 	private Date validTo;
 
-		
+	
 	//Getter and Setters
 		
 	@JsonIgnore
@@ -62,21 +41,21 @@ public class DCD implements Serializable
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
-	
+
 	public String getDataSourceManifestReferenceID() {
 		return dataSourceManifestReferenceID;
 	}
 
-	public void setDataSourceManifestReferenceID(String dataSourceManifestReferenceID) {
-		this.dataSourceManifestReferenceID = dataSourceManifestReferenceID;
+	public void setDataSourceManifestReferenceID(String dsmId) {
+		this.dataSourceManifestReferenceID = dsmId;
 	}
 
 	public String getDataConsumerManifestReferenceID() {
 		return dataConsumerManifestReferenceID;
 	}
 
-	public void setDataConsumerManifestReferenceID(String dataConsumerManifestReferenceID) {
-		this.dataConsumerManifestReferenceID = dataConsumerManifestReferenceID;
+	public void setDataConsumerManifestReferenceID(String dcmId) {
+		this.dataConsumerManifestReferenceID = dcmId;
 	}
 
 	public Date getValidFrom() {
@@ -91,8 +70,8 @@ public class DCD implements Serializable
 		return validTo;
 	}
 
-	public void setValidTo(Date validTo) {
-		this.validTo = validTo;
+	public void setValidTo(Date expirationDateTime) {
+		this.validTo = expirationDateTime;
 	}
 
 	public String getId() {
@@ -102,5 +81,22 @@ public class DCD implements Serializable
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+//	public DSM getDsm() {
+//	return dsm;
+//}
+//
+//public void setDsm(DSM dsm) {
+//	this.dsm = dsm;
+//}
+//
+//public DCM getDcm() {
+//	return dcm;
+//}
+//
+//public void setDcm(DCM dcm) {
+//	this.dcm = dcm;
+//}
+	
 	
 }

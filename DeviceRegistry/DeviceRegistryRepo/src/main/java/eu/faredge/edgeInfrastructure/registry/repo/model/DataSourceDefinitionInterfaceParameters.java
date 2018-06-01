@@ -29,14 +29,12 @@ public class DataSourceDefinitionInterfaceParameters implements Serializable
 	@JsonIgnore
 	private Integer Id;
 
-
 	@Column(name = "descr")
 	private String descr;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
 	@JoinColumn(name = "dsdip_id")
 	private Set<Parameter> parameter;
-	
 	
 	//Getters and Setters
 	

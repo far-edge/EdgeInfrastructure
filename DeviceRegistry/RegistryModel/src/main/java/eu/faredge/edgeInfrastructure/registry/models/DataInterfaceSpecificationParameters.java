@@ -3,6 +3,8 @@ package eu.faredge.edgeInfrastructure.registry.models;
 import java.util.Collection;
 import java.util.UUID;
 
+import eu.faredge.edgeInfrastructure.registry.models.dsm.Parameter;
+
 public class DataInterfaceSpecificationParameters 
 {
 

@@ -247,25 +247,34 @@ public class RegistryRepoClient implements RegistryRepoInterface
 	@Override
 	public ClientResponse deleteResource(String uri, String id)
 	{
+		System.out.println("Registry:repoclient:deleteResource==>repoUri=" + uri + " dsmUri=" + id);
+
 		ClientResponse response;// = webResource.type("application/json").get(ClientResponse.class);
 		try
 		{
 			// create client resource for REST call
-			WebResource webResource = client.resource(uri).queryParam("uri", id);
+			WebResource webResource = client.resource(uri).queryParam("id", id);
 			//webResource.path(id);
 			// String request = uri;// mapper.writeValueAsString(postData);
 
 			// call resource and get Results
 			response = webResource.type("application/json").delete(ClientResponse.class);
 
-			if (response.getStatus() != 201)
+			if (response.getStatus() != 200)
 			{
 				// throw new RuntimeException("Failed : HTTP error code : " +
-				// response.getStatus());
+				//response.getStatus();
+				System.out.println("Registry:repoclient:deleteResource==>response failed=" + response.getStatus());
+				
 			}
+			
+			else
+				System.out.println("Registry:repoclient:deleteResource==>response success!=" + response.getStatus());
+				
 
 //			String result = response.getEntity(String.class);
 
+			//System.out.println("Registry:repoclient:deleteResource==>response success=" + response.getStatus());
 			return response;
 
 		}

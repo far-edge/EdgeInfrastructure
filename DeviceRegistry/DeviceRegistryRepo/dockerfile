@@ -1,0 +1,9 @@
+COPY ./target/deviceRegistryRepo-0.0.1-SNAPSHOT.jar D:\faredge\runnableSoftware\jar\
+WORKDIR D:\faredge\runnableSoftware\jar\
+EXPOSE 8080
+CMD ["java", "-jar", "deviceRegistryRepo-1.0.0-SNAPSHOT.jar"]
+
+FROM openjdk:8-jre-alpine
+COPY *.jar /Application.jar
+CMD java -jar /Application.jar
+EXPOSE 8070

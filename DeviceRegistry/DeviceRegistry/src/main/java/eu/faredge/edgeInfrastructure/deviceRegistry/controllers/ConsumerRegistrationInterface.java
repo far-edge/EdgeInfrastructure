@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
-import eu.faredge.edgeInfrastructure.registry.models.DSM;
-import eu.faredge.edgeInfrastructure.registry.models.DCD;
-import eu.faredge.edgeInfrastructure.registry.models.DCM;
+import eu.faredge.edgeInfrastructure.registry.models.dcd.DCD;
+import eu.faredge.edgeInfrastructure.registry.models.dcm.DCM;
+import eu.faredge.edgeInfrastructure.registry.models.dsm.DSM;
 
 
 public interface ConsumerRegistrationInterface {

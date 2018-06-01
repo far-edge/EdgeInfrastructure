@@ -3,7 +3,7 @@ package eu.faredge.edgeInfrastructure.deviceRegistry.controllers;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
-import eu.faredge.edgeInfrastructure.registry.models.DSM;
+import eu.faredge.edgeInfrastructure.registry.models.dsm.DSM;
 
 public interface DeviceRegistrationInterface {
 

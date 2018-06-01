@@ -10,7 +10,7 @@ import eu.faredge.edgeInfrastructure.deviceRegistry.business.BusinessImp;
 import eu.faredge.edgeInfrastructure.deviceRegistry.business.LedgerCredentials;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResult;
 import eu.faredge.edgeInfrastructure.registry.messages.RegistrationResultStatusEnum;
-import eu.faredge.edgeInfrastructure.registry.models.DSM;
+import eu.faredge.edgeInfrastructure.registry.models.dsm.DSM;
 import io.swagger.annotations.Api;
 
 @RestController
@@ -26,11 +26,13 @@ public class DeviceRegistrationController implements DeviceRegistrationInterface
 	{
 		
 		//TODO delete these 4 lines
-		System.out.println("Controller:deviceRegistration==> dmsuri= " + manifest.getUri());
+		System.out.println("Controller:deviceRegistration==> dmsid= " + manifest.getId() + " uri=" + manifest.getUri());
 		System.out.println("Controller:deviceRegistration==> dsduri=" + manifest.getDataSourceDefinitionReferenceID());
 		System.out.println("Controller:deviceRegistration==> params=" + manifest.getDataSourceDefinitionInterfaceParameters().getParameter().size());
 		String user="george";
 		String password="george123";
+		
+		//manifest.setUri(manifest.getId());
 
 		try 
 		{
@@ -57,9 +59,13 @@ public class DeviceRegistrationController implements DeviceRegistrationInterface
 				res.setStatusMessage("Authorization Failure"); 
 				return res;
 			}
+			//create dsm to ledger
+			String dsmId = bimpl.createDsmToLedger(manifest);
+			manifest.setId(dsmId);
 
 			// if authorized and authenticated creates the data source manifest to the
 			// registry repo
+			
 			DSM registeredDsm = bimpl.createDsm(manifest);
 			if (registeredDsm!=null)
 			{
@@ -77,8 +83,8 @@ public class DeviceRegistrationController implements DeviceRegistrationInterface
 			// Successful authentication, authorization and registration. Create response message		
 			res.setStatus(RegistrationResultStatusEnum.SUCCESS);			
 			res.setStatusMessage("Succes uuid=" + registeredDsm.getUri());
-			res.setBody(registeredDsm.getUri());
-			System.out.println("Controller:deviceRegistration==> registered!=" + registeredDsm.getUri());
+			res.setBody(registeredDsm.getId());
+			System.out.println("Controller:deviceRegistration==> registered!=" + registeredDsm.getId());
 			return res;
 			
 
@@ -94,11 +100,11 @@ public class DeviceRegistrationController implements DeviceRegistrationInterface
 	}
 
 	@RequestMapping(value = "/DeviceRegistration", method = RequestMethod.DELETE)
-	public RegistrationResult deviceRegistration(String id) // , Object credentials)
+	public RegistrationResult deviceRegistration( String id) // , Object credentials)
 	{
 		String user="george";
 		String password="george123";
-		System.out.println("Controller:deviceRegistration unregister==> id= " + id);
+		System.out.println("Registry:Controller:deviceRegistration unregister==> id= " + id);
 		
 		boolean loggin = true;
 		boolean authorized = false;

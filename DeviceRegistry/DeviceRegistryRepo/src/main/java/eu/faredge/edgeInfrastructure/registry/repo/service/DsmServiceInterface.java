@@ -13,6 +13,7 @@ public interface DsmServiceInterface
 	List<DSM> findByDataSourceDefinitionReferenceID(String dataSourceDefinitionReferenceID);
 	boolean delete(DSM dsm);
 	boolean deleteByUri(String uri);
+	boolean deleteById(String uri);
 	boolean addDsm(DSM dsm);
 
 }
