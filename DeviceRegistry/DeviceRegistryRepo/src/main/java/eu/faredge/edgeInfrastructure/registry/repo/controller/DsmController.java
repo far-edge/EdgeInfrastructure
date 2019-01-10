@@ -146,8 +146,8 @@ public class DsmController
 		//Check if result is false
 		if (flag == false)
 		{
-			status = HttpStatus.FORBIDDEN;
-			log.debug("DSM didn't added. macAdrress already exists, or DCD allready exists. Status= " + HttpStatus.FORBIDDEN);
+			status = HttpStatus.CONFLICT;
+			log.debug("DSM didn't added. macAdrress already exists, or DCD allready exists. Status= " + HttpStatus.CONFLICT);
 		}
 		else
 		{
@@ -172,8 +172,8 @@ public class DsmController
     	if (flag==false)
     	{
     		msg="false";
-    		status = HttpStatus.NO_CONTENT;
-    		log.debug("DSM didn't deleted. DSM doesnot exists. Status= " + HttpStatus.NO_CONTENT);
+    		status = HttpStatus.NOT_FOUND;
+    		log.debug("DSM didn't deleted. DSM doesnot exists. Status= " + HttpStatus.NOT_FOUND);
     	}
     	else
     	{
@@ -199,8 +199,8 @@ public class DsmController
     	if (flag==false)
     	{
     		msg="false";
-    		status = HttpStatus.NO_CONTENT;
-    		log.debug("DSM didn't deleted. DSM doesnot exists. Status= " + HttpStatus.NO_CONTENT);
+    		status = HttpStatus.NOT_FOUND;
+    		log.debug("DSM didn't deleted. DSM doesnot exists. Status= " + HttpStatus.NOT_FOUND);
     	}
     	else
     	{
@@ -226,8 +226,8 @@ public class DsmController
     	if (flag==false)
     	{
     		msg="false";
-    		status = HttpStatus.NO_CONTENT;
-    		log.debug("DSM didn't deleted. DSM doesnot exists. Status= " + HttpStatus.NO_CONTENT);
+    		status = HttpStatus.NOT_FOUND;
+    		log.debug("DSM didn't deleted. DSM doesnot exists. Status= " + HttpStatus.NOT_FOUND);
     	}
     	else
     	{

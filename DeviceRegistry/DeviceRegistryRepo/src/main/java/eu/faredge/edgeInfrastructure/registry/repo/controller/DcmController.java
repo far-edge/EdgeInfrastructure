@@ -110,8 +110,8 @@ public class DcmController
 		//Check if result is false
 		if (flag == false)
 		{
-			log.debug("DCM didn't added. macAdrress already exists, or DCD allready exists. Status= " + HttpStatus.FORBIDDEN);
-			return new ResponseEntity<DCM>(dcm, HttpStatus.FORBIDDEN);
+			log.debug("DCM didn't added. macAdrress already exists, or DCD allready exists. Status= " + HttpStatus.CONFLICT);
+			return new ResponseEntity<DCM>(dcm, HttpStatus.CONFLICT);
 		}
 		else
 		{
@@ -135,8 +135,8 @@ public class DcmController
     	if (flag==false)
     	{
     		msg="false";
-    		status = HttpStatus.NO_CONTENT;
-    		log.debug("DCM didn't deleted. DCM doesnot exists. Status= " + HttpStatus.NO_CONTENT);
+    		status = HttpStatus.NOT_FOUND;
+    		log.debug("DCM didn't deleted. DCM doesnot exists. Status= " + HttpStatus.NOT_FOUND);
     	}
     	else 
     	{
@@ -161,8 +161,8 @@ public class DcmController
     	if (flag==false)
     	{
     		msg="false";
-    		status = HttpStatus.NO_CONTENT;
-    		log.debug("DCM didn't deleted. DCM doesnot exists. Status= " + HttpStatus.NO_CONTENT);
+    		status = HttpStatus.NOT_FOUND;
+    		log.debug("DCM didn't deleted. DCM doesnot exists. Status= " + HttpStatus.NOT_FOUND);
     	}
     	else
     	{

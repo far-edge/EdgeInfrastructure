@@ -168,7 +168,7 @@ public class DcdController
 		if (flag == false)
 		{
 			log.debug("DCD didn't added. dcm or dsm doesnot exist, or DCD allready exists. Status= " + HttpStatus.FORBIDDEN);
-			return new ResponseEntity<DCD>(dcd, HttpStatus.FORBIDDEN);
+			return new ResponseEntity<DCD>(dcd, HttpStatus.CONFLICT);
 		}
 		else
 		{
@@ -192,8 +192,8 @@ public class DcdController
     	if (flag==false)
     	{
     		msg="false";
-    		status = HttpStatus.NO_CONTENT;
-    		log.debug("DCD didn't deleted. DCD doesnot exists. Status= " + HttpStatus.NO_CONTENT);
+    		status = HttpStatus.NOT_FOUND;
+    		log.debug("DCD didn't deleted. DCD doesnot exists. Status= " + HttpStatus.NOT_FOUND);
     	}
     	else 
     	{
@@ -219,8 +219,8 @@ public class DcdController
     	if (flag==false)
     	{
     		msg="false";
-    		status = HttpStatus.NO_CONTENT;
-    		log.debug("DCD didn't deleted. DCD doesnot exists. Status= " + HttpStatus.NO_CONTENT);
+    		status = HttpStatus.NOT_FOUND;
+    		log.debug("DCD didn't deleted. DCD doesnot exists. Status= " + HttpStatus.NOT_FOUND);
     	}
     	else 
     	{
